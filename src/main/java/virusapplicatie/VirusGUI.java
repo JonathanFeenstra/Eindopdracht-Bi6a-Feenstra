@@ -60,7 +60,6 @@ public class VirusGUI extends javax.swing.JFrame {
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/virusicon.png")).getImage());
         setLocationByPlatform(true);
         setMinimumSize(new java.awt.Dimension(750, 580));
-        setPreferredSize(new java.awt.Dimension(750, 580));
         setResizable(false);
 
         headerLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -281,15 +280,16 @@ public class VirusGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        // TODO add your handling code here:
+        VirusLogica.loadFile(evt);
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
-        VirusLogica.loadFile();
+        VirusLogica.loadFile(evt);
     }//GEN-LAST:event_openMenuItemActionPerformed
 
     private void searchTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusGained
-        searchTextField.setText("");
+        if (searchTextField.getText().equals("Search"))
+            searchTextField.setText("");
     }//GEN-LAST:event_searchTextFieldFocusGained
 
     private void searchTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusLost
@@ -299,6 +299,7 @@ public class VirusGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_searchTextFieldFocusLost
 
     private void hostComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_hostComboBox1ItemStateChanged
+        hostComboBox1.setToolTipText((String) hostComboBox1.getSelectedItem());
         VirusLogica.updateLists();
         VirusLogica.updateTextArea(virusTextArea1, VirusLogica.virusList1);
         VirusLogica.updateTextArea(overlapTextArea, VirusLogica.overlapList);
@@ -320,6 +321,7 @@ public class VirusGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_hostsRadioButtonActionPerformed
 
     private void hostComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_hostComboBox2ItemStateChanged
+        hostComboBox1.setToolTipText((String) hostComboBox1.getSelectedItem());
         VirusLogica.updateLists();
         VirusLogica.updateTextArea(virusTextArea2, VirusLogica.virusList2);
         VirusLogica.updateTextArea(overlapTextArea, VirusLogica.overlapList);
@@ -375,7 +377,7 @@ public class VirusGUI extends javax.swing.JFrame {
     private javax.swing.JLabel classLabel;
     private javax.swing.JRadioButton classRadioButton;
     private javax.swing.JLabel fileLabel;
-    private javax.swing.JMenu fileMenu;
+    static javax.swing.JMenu fileMenu;
     private javax.swing.JLabel headerLabel;
     private javax.swing.JSeparator headerSeparator;
     static javax.swing.JComboBox<String> hostComboBox1;
@@ -385,11 +387,11 @@ public class VirusGUI extends javax.swing.JFrame {
     private javax.swing.JRadioButton idRadioButton;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuItem openMenuItem;
+    static javax.swing.JMenuItem openMenuItem;
     private javax.swing.JScrollPane overlapScrollPane;
     static javax.swing.JTextArea overlapTextArea;
-    private javax.swing.JButton searchButton;
-    javax.swing.JTextField searchTextField;
+    static javax.swing.JButton searchButton;
+    static javax.swing.JTextField searchTextField;
     private javax.swing.JPanel sortPanel;
     private javax.swing.ButtonGroup sortingButtonGroup;
     private javax.swing.JScrollPane virusScrollPane1;

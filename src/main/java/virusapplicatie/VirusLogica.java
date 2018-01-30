@@ -7,7 +7,10 @@ package virusapplicatie;
 
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
+import java.awt.event.ActionEvent;
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -20,44 +23,24 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class VirusLogica {
 
-    /**
-     *
-     */
-    public static HashMap<String, HashSet<Virus>> host2VirusMap;
-
-    /**
-     *
-     */
-    public static List<Virus> virusList1,
-
-    /**
-     *
-     */
-    virusList2,
-
-    /**
-     *
-     */
-    overlapList;
-
-    /**
-     *
-     */
-    public static final String[] CLASSIFICATIES = {"Any", "dsRNA", "dsDNA", "ssRNA", "ssDNA", "Retrovirus", "Satelite virus and Virophage", "Viroid", "Other"};
+    static HashMap<String, HashSet<Virus>> host2VirusMap;
+    static List<Virus> virusList1, virusList2, overlapList;
+    static final String[] CLASSIFICATIES = {"Any", "dsRNA", "dsDNA", "ssRNA", "ssDNA", "Retrovirus", "Satelite virus and Virophage", "Viroid", "Other"};
 
     /**
      * Opent FileChooser om file te selecteren.
      *
-     * @return de geselecteerde File of null bij exceptions
+     * @return reader van de geselecteerde File of null als niets geselecteerd
+     * is en bij exceptions
      * @throws FileNotFoundException als de geselecteerde File niet gevonden is
      */
-    public static File selectFile() throws FileNotFoundException {
+    public static Reader selectFile() throws FileNotFoundException {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileFilter(new FileNameExtensionFilter("Tab seperated values", "tsv"));
         int returnVal = chooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             if (chooser.getSelectedFile().exists()) {
-                return chooser.getSelectedFile();
+                return new FileReader(chooser.getSelectedFile());
             } else {
                 throw new FileNotFoundException();
             }
@@ -68,9 +51,9 @@ public class VirusLogica {
     /**
      * Maakt HashMap van String host ID + (naam) naar HashSet van Virussen.
      *
-     * @param file de te lezen tsv-file
+     * @param reader van de te lezen tsv-file
      */
-    public static void createHost2VirusMap(File file) {
+    public static void createHost2VirusMap(Reader reader) {
         try {
             host2VirusMap = new HashMap<>();
             HashSet<Virus> virusSet = new HashSet<>();
@@ -78,7 +61,7 @@ public class VirusLogica {
             settings.getFormat().setLineSeparator("\n");
             TsvParser parser = new TsvParser(settings);
             String[] row;
-            parser.beginParsing(file);
+            parser.beginParsing(reader);
             parser.parseNext(); //Sla eerste regel met kopjes over
             while ((row = parser.parseNext()) != null) {
                 if (row[7] != null) { //Virussen zonder host ID worden niet opgeslagen
@@ -98,14 +81,15 @@ public class VirusLogica {
             }
             parser.stopParsing();
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "NumberFormatException", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Invalid file format\n" + ex.toString(), "NumberFormatException", JOptionPane.ERROR_MESSAGE);
         } catch (IndexOutOfBoundsException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "IndexOutOfBoundsException", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, ex.toString(), "IndexOutOfBoundsException", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     /**
      * Bepaalt virusclassificatie adhv sleutelwoorden in viruslineage
+     *
      * @param virusLineage te vinden in kolom 3 van tsv file
      * @return de bepaalde classificatie (String)
      */
@@ -126,13 +110,24 @@ public class VirusLogica {
     }
 
     /**
-     * Procedure die de GUI moet ondergaan als op de openbutton in wordt geklikt
+     * Procedure die de GUI moet ondergaan als op de openbutton wordt geklikt
+     *
+     * @param evt
      */
-    public static void loadFile() {
+    public static void loadFile(ActionEvent evt) {
+        Reader selectedFileReader;
         try {
-            File selectedFile = selectFile();
-            if (selectedFile != null && selectedFile.exists()) {
-                createHost2VirusMap(selectedFile);
+            if (evt.getSource().equals(VirusGUI.openMenuItem)) {
+                selectedFileReader = selectFile();
+            } else {
+                try {
+                    selectedFileReader = new InputStreamReader(new URL(VirusGUI.searchTextField.getText()).openStream());
+                } catch (MalformedURLException ex) {
+                    selectedFileReader = new FileReader(VirusGUI.searchTextField.getText());
+                }
+            }
+            if (selectedFileReader != null) {
+                createHost2VirusMap(selectedFileReader);
                 VirusGUI.hostComboBox1.setModel(new DefaultComboBoxModel(host2VirusMap.keySet().toArray()));
                 VirusGUI.hostComboBox2.setModel(new DefaultComboBoxModel(host2VirusMap.keySet().toArray()));
                 VirusGUI.hostComboBox1.setEnabled(true);
@@ -143,7 +138,11 @@ public class VirusLogica {
                 updateTextArea(VirusGUI.overlapTextArea, overlapList);
             }
         } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "FileNotFoundExeption", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, ex.toString(), "FileNotFoundException", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, ex.toString(), "IOException", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.toString(), "Exception", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -169,6 +168,7 @@ public class VirusLogica {
 
     /**
      * Toont virusljijst in textarea.
+     *
      * @param textArea
      * @param virusList
      */
