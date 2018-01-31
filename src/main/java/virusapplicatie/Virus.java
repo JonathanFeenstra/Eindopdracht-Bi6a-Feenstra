@@ -1,14 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Virus App
+ * Datum laatste versie: 31 januari 2018
+ * Functionaliteit: Het weergeven, sorteren en filteren van viruslijsten uit 
+ * tsv-bestanden van Virus-Host DB en het bepalen van de overlap tussen deze 
+ * lijsten. Specifiek ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv
  */
 package virusapplicatie;
 
 import java.util.ArrayList;
 
 /**
- *
+ * Class voor het opslaan van informatie per virus.
+ * 
  * @author Jonathan Feenstra
  * @since JDK 1.8
  * @version 1.0
@@ -29,7 +32,7 @@ public class Virus implements Comparable {
      * Constructor
      *
      * @param id
-     * @param soort
+     * @param soort 
      * @param hostId
      * @param classificatie
      */

@@ -1,7 +1,9 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Virus App
+ * Datum laatste versie: 31 januari 2018
+ * Functionaliteit: Het weergeven, sorteren en filteren van viruslijsten uit 
+ * tsv-bestanden van Virus-Host DB en het bepalen van de overlap tussen deze 
+ * lijsten. Specifiek ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv
  */
 package virusapplicatie;
 
@@ -16,6 +18,8 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
+ * Bevat de logica voor het parsen van bestanden, inladen van data, sorteren,
+ * filteren en bijwerken van de viruslijsten.
  *
  * @author Jonathan Feenstra
  * @since JDK 1.8
@@ -26,13 +30,14 @@ public class VirusLogica {
     static HashMap<String, HashSet<Virus>> host2VirusMap;
     static List<Virus> virusList1, virusList2, overlapList;
     static final String[] CLASSIFICATIES = {"Any", "dsRNA", "dsDNA", "ssRNA", "ssDNA", "Retrovirus", "Satelite virus and Virophage", "Viroid", "Other"};
+    static final String FILEFORMAT_ERRORMESSAGE = "Onjuist bestandsformat. Zorg ervoor dat het bestand dezelfde structuur heeft als ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv.\n"; 
 
     /**
      * Opent FileChooser om file te selecteren.
      *
-     * @return reader van de geselecteerde File of null als niets geselecteerd
+     * @return reader van de geselecteerde file of null als niets geselecteerd
      * is en bij exceptions
-     * @throws FileNotFoundException als de geselecteerde File niet gevonden is
+     * @throws FileNotFoundException als de geselecteerde file niet gevonden is
      */
     public static Reader selectFile() throws FileNotFoundException {
         JFileChooser chooser = new JFileChooser();
@@ -49,7 +54,7 @@ public class VirusLogica {
     }
 
     /**
-     * Maakt HashMap van String host ID + (naam) naar HashSet van Virussen.
+     * Maakt HashMap van host ID + (naam) naar HashSet van Virussen.
      *
      * @param reader van de te lezen tsv-file
      */
@@ -81,9 +86,9 @@ public class VirusLogica {
             }
             parser.stopParsing();
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Invalid file format\n" + ex.toString(), "NumberFormatException", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, FILEFORMAT_ERRORMESSAGE + ex.toString(), "NumberFormatException", JOptionPane.ERROR_MESSAGE);
         } catch (IndexOutOfBoundsException ex) {
-            JOptionPane.showMessageDialog(null, ex.toString(), "IndexOutOfBoundsException", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, FILEFORMAT_ERRORMESSAGE + ex.toString(), "IndexOutOfBoundsException", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -91,7 +96,7 @@ public class VirusLogica {
      * Bepaalt virusclassificatie adhv sleutelwoorden in viruslineage
      *
      * @param virusLineage te vinden in kolom 3 van tsv file
-     * @return de bepaalde classificatie (String)
+     * @return de bepaalde classificatie
      */
     public static String determineVirusClass(String virusLineage) {
         for (int i = 1; i < 5; i++) {
@@ -110,9 +115,11 @@ public class VirusLogica {
     }
 
     /**
-     * Procedure die de GUI moet ondergaan als op de openbutton wordt geklikt
+     * Procedure die steed moet worden ondergaan als een bestand wordt geopend.
+     * Thijs Weenink heeft mij geholpen met het inladen van URL's
      *
      * @param evt
+     *
      */
     public static void loadFile(ActionEvent evt) {
         Reader selectedFileReader;
@@ -147,7 +154,8 @@ public class VirusLogica {
     }
 
     /**
-     * Sorteert en filtert viruslijsten en bepaald de overlap.
+     * Sorteert en filtert viruslijsten en bepaald de overlap op basis van
+     * geselecteerde items in de VirusGUI.
      */
     public static void updateLists() {
         virusList1 = new ArrayList<>(host2VirusMap.get(VirusGUI.hostComboBox1.getSelectedItem().toString()));
@@ -167,7 +175,7 @@ public class VirusLogica {
     }
 
     /**
-     * Toont virusljijst in textarea.
+     * Toont een gegeven virusljijst in een gegeven JTextArea.
      *
      * @param textArea
      * @param virusList
@@ -178,4 +186,17 @@ public class VirusLogica {
             textArea.append(virus.getId() + "\n");
         });
     }
+
+    /**
+     * Zorgt ervoor dat de viruslijsten en de weergave van JTextArea's worden
+     * bijgewerkt in de VirusGUI.
+     */
+    public static void updateAll() {
+        updateLists();
+        updateTextArea(VirusGUI.virusTextArea1, virusList1);
+        updateTextArea(VirusGUI.overlapTextArea, overlapList);
+        updateTextArea(VirusGUI.virusTextArea2, virusList2);
+        updateTextArea(VirusGUI.overlapTextArea, overlapList);
+    }
+
 }

@@ -1,12 +1,15 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Virus App
+ * Datum laatste versie: 31 januari 2018
+ * Functionaliteit: Het weergeven, sorteren en filteren van viruslijsten uit 
+ * tsv-bestanden van Virus-Host DB en het bepalen van de overlap tussen deze 
+ * lijsten. Specifiek ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv
  */
 package virusapplicatie;
 
 /**
- *
+ * GUI-class met de aanroep van methoden bij het uitvoeren van bepaalde acties.
+ * 
  * @author Jonathan Feenstra
  * @since JDK 1.8
  * @version 1.0
@@ -288,8 +291,9 @@ public class VirusGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_openMenuItemActionPerformed
 
     private void searchTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusGained
-        if (searchTextField.getText().equals("Search"))
+        if (searchTextField.getText().equals("Search")) {
             searchTextField.setText("");
+        }
     }//GEN-LAST:event_searchTextFieldFocusGained
 
     private void searchTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusLost
@@ -307,17 +311,17 @@ public class VirusGUI extends javax.swing.JFrame {
 
     private void idRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idRadioButtonActionPerformed
         Virus.sortMethod = 0;
-        updateAll();
+        VirusLogica.updateAll();
     }//GEN-LAST:event_idRadioButtonActionPerformed
 
     private void classRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_classRadioButtonActionPerformed
         Virus.sortMethod = 1;
-        updateAll();
+        VirusLogica.updateAll();
     }//GEN-LAST:event_classRadioButtonActionPerformed
 
     private void hostsRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hostsRadioButtonActionPerformed
         Virus.sortMethod = 2;
-        updateAll();
+        VirusLogica.updateAll();
     }//GEN-LAST:event_hostsRadioButtonActionPerformed
 
     private void hostComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_hostComboBox2ItemStateChanged
@@ -328,18 +332,12 @@ public class VirusGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_hostComboBox2ItemStateChanged
 
     private void classComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_classComboBoxItemStateChanged
-        updateAll();
+        VirusLogica.updateAll();
     }//GEN-LAST:event_classComboBoxItemStateChanged
-    
-    private void updateAll() {
-        VirusLogica.updateLists();
-        VirusLogica.updateTextArea(virusTextArea1, VirusLogica.virusList1);
-        VirusLogica.updateTextArea(overlapTextArea, VirusLogica.overlapList);
-        VirusLogica.updateTextArea(virusTextArea2, VirusLogica.virusList2);
-        VirusLogica.updateTextArea(overlapTextArea, VirusLogica.overlapList);
-    }
-    
+
     /**
+     * Maakt de GUI zichtbaar.
+     *
      * @param args the command line arguments
      */
     public static void main(String args[]) {
