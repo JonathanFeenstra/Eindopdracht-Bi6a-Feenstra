@@ -1,6 +1,6 @@
 /*
  * Virus App
- * Datum laatste versie: 31 januari 2018
+ * Datum laatste versie: 1 februari 2018
  * Functionaliteit: Het weergeven, sorteren en filteren van viruslijsten uit 
  * tsv-bestanden van Virus-Host DB en het bepalen van de overlap tussen deze 
  * lijsten. Specifiek ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv
@@ -97,7 +97,25 @@ public class Virus implements Comparable {
     public void setClassificatie(String classificatie) {
         this.classificatie = classificatie;
     }
+    
+    /**
+     * Hostlist setter
+     * 
+     * @return hostlist
+     */
+    public ArrayList<Integer> getHostList() {
+        return hostList;
+    }
 
+    /**
+     * Hostlist getter
+     * 
+     * @param hostList
+     */
+    public void setHostList(ArrayList<Integer> hostList) {
+        this.hostList = hostList;
+    }
+    
     /**
      * Voegt host ID toe
      *

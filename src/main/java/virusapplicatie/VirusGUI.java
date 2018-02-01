@@ -1,6 +1,6 @@
 /*
  * Virus App
- * Datum laatste versie: 31 januari 2018
+ * Datum laatste versie: 1 februari 2018
  * Functionaliteit: Het weergeven, sorteren en filteren van viruslijsten uit 
  * tsv-bestanden van Virus-Host DB en het bepalen van de overlap tussen deze 
  * lijsten. Specifiek ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv
@@ -57,6 +57,8 @@ public class VirusGUI extends javax.swing.JFrame {
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
+        fileMenuSeparator = new javax.swing.JPopupMenu.Separator();
+        exitMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Virus App - © Jonathan Feenstra");
@@ -83,6 +85,11 @@ public class VirusGUI extends javax.swing.JFrame {
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 searchTextFieldFocusLost(evt);
+            }
+        });
+        searchTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchTextFieldActionPerformed(evt);
             }
         });
 
@@ -274,6 +281,17 @@ public class VirusGUI extends javax.swing.JFrame {
             }
         });
         fileMenu.add(openMenuItem);
+        fileMenu.add(fileMenuSeparator);
+
+        exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
+        exitMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/exit.png"))); // NOI18N
+        exitMenuItem.setText("Exit");
+        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(exitMenuItem);
 
         menuBar.add(fileMenu);
 
@@ -335,6 +353,14 @@ public class VirusGUI extends javax.swing.JFrame {
         VirusLogica.updateAll();
     }//GEN-LAST:event_classComboBoxItemStateChanged
 
+    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_exitMenuItemActionPerformed
+
+    private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
+        VirusLogica.loadFile(evt);
+    }//GEN-LAST:event_searchTextFieldActionPerformed
+
     /**
      * Maakt de GUI zichtbaar.
      *
@@ -374,8 +400,10 @@ public class VirusGUI extends javax.swing.JFrame {
     static javax.swing.JComboBox<String> classComboBox;
     private javax.swing.JLabel classLabel;
     private javax.swing.JRadioButton classRadioButton;
+    private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JLabel fileLabel;
     static javax.swing.JMenu fileMenu;
+    private javax.swing.JPopupMenu.Separator fileMenuSeparator;
     private javax.swing.JLabel headerLabel;
     private javax.swing.JSeparator headerSeparator;
     static javax.swing.JComboBox<String> hostComboBox1;
