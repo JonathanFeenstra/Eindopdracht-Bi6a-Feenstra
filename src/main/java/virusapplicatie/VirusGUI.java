@@ -434,7 +434,7 @@ public class VirusGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public static javax.swing.JComboBox<String> classComboBox;
+    static javax.swing.JComboBox<String> classComboBox;
     private javax.swing.JLabel classLabel;
     private javax.swing.JRadioButton classRadioButton;
     private javax.swing.JMenuItem exitMenuItem;
@@ -443,23 +443,23 @@ public class VirusGUI extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator fileMenuSeparator;
     private javax.swing.JLabel headerLabel;
     private javax.swing.JSeparator headerSeparator;
-    public static javax.swing.JComboBox<String> hostComboBox1;
-    public static javax.swing.JComboBox<String> hostComboBox2;
+    static javax.swing.JComboBox<String> hostComboBox1;
+    static javax.swing.JComboBox<String> hostComboBox2;
     private javax.swing.JLabel hostLabel;
     private javax.swing.JRadioButton hostsRadioButton;
     private javax.swing.JRadioButton idRadioButton;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     static javax.swing.JMenuItem openMenuItem;
-    public static javax.swing.JEditorPane overlapEditorPane;
-    private javax.swing.JScrollPane overlapScrollPane;
+    static javax.swing.JEditorPane overlapEditorPane;
+    static javax.swing.JScrollPane overlapScrollPane;
     private javax.swing.JButton searchButton;
-    public static javax.swing.JTextField searchTextField;
+    static javax.swing.JTextField searchTextField;
     private javax.swing.JPanel sortPanel;
     private javax.swing.ButtonGroup sortingButtonGroup;
-    public static javax.swing.JEditorPane virusEditorPane1;
-    public static javax.swing.JEditorPane virusEditorPane2;
-    private javax.swing.JScrollPane virusScrollPane1;
-    private javax.swing.JScrollPane virusScrollPane2;
+    static javax.swing.JEditorPane virusEditorPane1;
+    static javax.swing.JEditorPane virusEditorPane2;
+    static javax.swing.JScrollPane virusScrollPane1;
+    static javax.swing.JScrollPane virusScrollPane2;
     // End of variables declaration//GEN-END:variables
 }

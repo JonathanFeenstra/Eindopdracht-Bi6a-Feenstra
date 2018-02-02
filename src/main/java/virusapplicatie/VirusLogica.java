@@ -17,6 +17,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
@@ -62,7 +63,7 @@ public class VirusLogica {
     }
 
     /**
-     * Maakt HashMap van host ID + (naam) naar HashSet van Virussen.
+     * Maakt HashMap van (host ID + naam) naar HashSet van Virussen.
      *
      * @param reader van de te lezen tsv-file
      */
@@ -184,6 +185,7 @@ public class VirusLogica {
             Set overlapSet = new HashSet(virusList1);
             overlapSet.retainAll(virusList2);
             overlapList = new ArrayList(overlapSet);
+            updateBorders();
         }
     }
 
@@ -208,6 +210,36 @@ public class VirusLogica {
     }
 
     /**
+     * Geeft het aantal virussen per lijst weer als het meer is dan 0.
+     */
+    public static void updateBorders() {
+        TitledBorder virusBorder1 = (TitledBorder) VirusGUI.virusScrollPane1.getBorder(),
+                virusBorder2 = (TitledBorder) VirusGUI.virusScrollPane2.getBorder(),
+                overlapBorder = (TitledBorder) VirusGUI.overlapScrollPane.getBorder();
+        if (virusList1.size() > 0) {
+            virusBorder1.setTitle("Viruslijst (" + virusList1.size() + ")");
+            VirusGUI.virusScrollPane1.repaint();
+        } else {
+            virusBorder1.setTitle("Viruslijst");
+            VirusGUI.virusScrollPane1.repaint();
+        }
+        if (virusList2.size() > 0) {
+            virusBorder2.setTitle("Viruslijst (" + virusList2.size() + ")");
+            VirusGUI.virusScrollPane2.repaint();
+        } else {
+            virusBorder2.setTitle("Viruslijst");
+            VirusGUI.virusScrollPane2.repaint();
+        }
+        if (overlapList.size() > 0) {
+            overlapBorder.setTitle("Overeenkomst (" + overlapList.size() + ")");
+            VirusGUI.overlapScrollPane.repaint();
+        } else {
+            overlapBorder.setTitle("Overeenkomst");
+            VirusGUI.overlapScrollPane.repaint();
+        }
+    }
+
+    /**
      * Zorgt ervoor dat de viruslijsten en de weergave van JEditorPane's worden
      * bijgewerkt in de VirusGUI.
      */
@@ -218,10 +250,10 @@ public class VirusLogica {
         updateEditorPane(VirusGUI.virusEditorPane2, virusList2);
         updateEditorPane(VirusGUI.overlapEditorPane, overlapList);
     }
-    
+
     /**
      * Bezoekt website bij het klikken op een hyperlink.
-     * 
+     *
      * @param evt de HyperlinkEvent
      */
     public static void visitHyperlink(HyperlinkEvent evt) {

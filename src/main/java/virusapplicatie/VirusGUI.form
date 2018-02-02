@@ -221,7 +221,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchTextFieldActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="8"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JButton" name="searchButton">
@@ -269,7 +269,7 @@
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="8"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="hostLabel">
@@ -303,7 +303,7 @@
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="8"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JComboBox" name="hostComboBox2">
@@ -329,7 +329,7 @@
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="8"/>
           </AuxValues>
         </Component>
         <Container class="javax.swing.JPanel" name="sortPanel">
@@ -415,6 +415,9 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="8"/>
+          </AuxValues>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
@@ -427,7 +430,7 @@
                 <EventHandler event="hyperlinkUpdate" listener="javax.swing.event.HyperlinkListener" parameters="javax.swing.event.HyperlinkEvent" handler="virusEditorPane1HyperlinkUpdate"/>
               </Events>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="8"/>
               </AuxValues>
             </Component>
           </SubComponents>
@@ -442,6 +445,9 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="8"/>
+          </AuxValues>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
@@ -454,7 +460,7 @@
                 <EventHandler event="hyperlinkUpdate" listener="javax.swing.event.HyperlinkListener" parameters="javax.swing.event.HyperlinkEvent" handler="virusEditorPane2HyperlinkUpdate"/>
               </Events>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="8"/>
               </AuxValues>
             </Component>
           </SubComponents>
@@ -469,6 +475,9 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="8"/>
+          </AuxValues>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
@@ -481,7 +490,7 @@
                 <EventHandler event="hyperlinkUpdate" listener="javax.swing.event.HyperlinkListener" parameters="javax.swing.event.HyperlinkEvent" handler="overlapEditorPaneHyperlinkUpdate"/>
               </Events>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="8"/>
               </AuxValues>
             </Component>
           </SubComponents>
