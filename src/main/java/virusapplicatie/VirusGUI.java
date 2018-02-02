@@ -77,8 +77,8 @@ public class VirusGUI extends javax.swing.JFrame {
         fileLabel.setText("File of URL");
 
         searchTextField.setText("Search");
-        searchTextField.setMaximumSize(new java.awt.Dimension(39, 20));
-        searchTextField.setMinimumSize(new java.awt.Dimension(39, 20));
+        searchTextField.setMaximumSize(new java.awt.Dimension(159, 20));
+        searchTextField.setMinimumSize(new java.awt.Dimension(159, 20));
         searchTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 searchTextFieldFocusGained(evt);
@@ -167,7 +167,7 @@ public class VirusGUI extends javax.swing.JFrame {
         sortPanelLayout.setHorizontalGroup(
             sortPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sortPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(10, Short.MAX_VALUE)
                 .addGroup(sortPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(classRadioButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(hostsRadioButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -185,22 +185,23 @@ public class VirusGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        virusScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder("Viruslijst"));
+        virusScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Viruslijst"));
 
         virusTextArea1.setColumns(20);
         virusTextArea1.setRows(5);
-        virusTextArea1.setMaximumSize(new java.awt.Dimension(164, 94));
-        virusTextArea1.setMinimumSize(new java.awt.Dimension(164, 94));
+        virusTextArea1.setMaximumSize(new java.awt.Dimension(280, 150));
+        virusTextArea1.setMinimumSize(new java.awt.Dimension(280, 150));
         virusScrollPane1.setViewportView(virusTextArea1);
 
-        virusScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder("Viruslijst"));
+        virusScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Viruslijst"));
 
         virusTextArea2.setColumns(20);
         virusTextArea2.setRows(5);
-        virusTextArea2.setMaximumSize(new java.awt.Dimension(280, 50));
+        virusTextArea2.setMaximumSize(new java.awt.Dimension(280, 150));
+        virusTextArea2.setMinimumSize(new java.awt.Dimension(280, 150));
         virusScrollPane2.setViewportView(virusTextArea2);
 
-        overlapScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder("Overeenkomst"));
+        overlapScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Overeenkomst"));
 
         overlapTextArea.setColumns(20);
         overlapTextArea.setRows(5);
@@ -211,33 +212,39 @@ public class VirusGUI extends javax.swing.JFrame {
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(headerSeparator)
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(overlapScrollPane)
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addComponent(sortPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(virusScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(classLabel)
-                            .addComponent(fileLabel)
-                            .addComponent(hostLabel))
-                        .addGap(18, 18, 18)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addComponent(searchTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(searchButton))
-                            .addComponent(classComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                                .addComponent(hostComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(hostComboBox2, 0, 280, Short.MAX_VALUE)
-                                    .addComponent(virusScrollPane2)))))
-                    .addComponent(overlapScrollPane))
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(fileLabel)
+                                    .addComponent(classLabel))
+                                .addGap(12, 12, 12))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                .addComponent(hostLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                .addComponent(sortPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                    .addComponent(searchTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(searchButton))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                    .addComponent(hostComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGap(32, 32, 32)
+                                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(virusScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                                        .addComponent(hostComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(classComboBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 591, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(virusScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(312, 312, 312)))))
                 .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
@@ -260,9 +267,9 @@ public class VirusGUI extends javax.swing.JFrame {
                     .addComponent(hostComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(virusScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                     .addComponent(sortPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(virusScrollPane2, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(virusScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                    .addComponent(virusScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(overlapScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
                 .addContainerGap())
@@ -300,47 +307,28 @@ public class VirusGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        VirusLogica.loadFile(evt);
-    }//GEN-LAST:event_searchButtonActionPerformed
-
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
         VirusLogica.loadFile(evt);
     }//GEN-LAST:event_openMenuItemActionPerformed
 
-    private void searchTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusGained
-        if (searchTextField.getText().equals("Search")) {
-            searchTextField.setText("");
-        }
-    }//GEN-LAST:event_searchTextFieldFocusGained
+    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_exitMenuItemActionPerformed
 
-    private void searchTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusLost
-        if (searchTextField.getText().isEmpty()) {
-            searchTextField.setText("Search");
-        }
-    }//GEN-LAST:event_searchTextFieldFocusLost
-
-    private void hostComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_hostComboBox1ItemStateChanged
-        hostComboBox1.setToolTipText((String) hostComboBox1.getSelectedItem());
-        VirusLogica.updateLists();
-        VirusLogica.updateTextArea(virusTextArea1, VirusLogica.virusList1);
-        VirusLogica.updateTextArea(overlapTextArea, VirusLogica.overlapList);
-    }//GEN-LAST:event_hostComboBox1ItemStateChanged
-
-    private void idRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idRadioButtonActionPerformed
-        Virus.sortMethod = 0;
+    private void hostsRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hostsRadioButtonActionPerformed
+        Virus.sortMethod = 2;
         VirusLogica.updateAll();
-    }//GEN-LAST:event_idRadioButtonActionPerformed
+    }//GEN-LAST:event_hostsRadioButtonActionPerformed
 
     private void classRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_classRadioButtonActionPerformed
         Virus.sortMethod = 1;
         VirusLogica.updateAll();
     }//GEN-LAST:event_classRadioButtonActionPerformed
 
-    private void hostsRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hostsRadioButtonActionPerformed
-        Virus.sortMethod = 2;
+    private void idRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idRadioButtonActionPerformed
+        Virus.sortMethod = 0;
         VirusLogica.updateAll();
-    }//GEN-LAST:event_hostsRadioButtonActionPerformed
+    }//GEN-LAST:event_idRadioButtonActionPerformed
 
     private void hostComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_hostComboBox2ItemStateChanged
         hostComboBox1.setToolTipText((String) hostComboBox1.getSelectedItem());
@@ -349,17 +337,36 @@ public class VirusGUI extends javax.swing.JFrame {
         VirusLogica.updateTextArea(overlapTextArea, VirusLogica.overlapList);
     }//GEN-LAST:event_hostComboBox2ItemStateChanged
 
+    private void hostComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_hostComboBox1ItemStateChanged
+        hostComboBox1.setToolTipText((String) hostComboBox1.getSelectedItem());
+        VirusLogica.updateLists();
+        VirusLogica.updateTextArea(virusTextArea1, VirusLogica.virusList1);
+        VirusLogica.updateTextArea(overlapTextArea, VirusLogica.overlapList);
+    }//GEN-LAST:event_hostComboBox1ItemStateChanged
+
     private void classComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_classComboBoxItemStateChanged
         VirusLogica.updateAll();
     }//GEN-LAST:event_classComboBoxItemStateChanged
 
-    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_exitMenuItemActionPerformed
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        VirusLogica.loadFile(evt);
+    }//GEN-LAST:event_searchButtonActionPerformed
 
     private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
         VirusLogica.loadFile(evt);
     }//GEN-LAST:event_searchTextFieldActionPerformed
+
+    private void searchTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusLost
+        if (searchTextField.getText().isEmpty()) {
+            searchTextField.setText("Search");
+        }
+    }//GEN-LAST:event_searchTextFieldFocusLost
+
+    private void searchTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusGained
+        if (searchTextField.getText().equals("Search")) {
+            searchTextField.setText("");
+        }
+    }//GEN-LAST:event_searchTextFieldFocusGained
 
     /**
      * Maakt de GUI zichtbaar.
@@ -397,7 +404,7 @@ public class VirusGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    static javax.swing.JComboBox<String> classComboBox;
+    public static javax.swing.JComboBox<String> classComboBox;
     private javax.swing.JLabel classLabel;
     private javax.swing.JRadioButton classRadioButton;
     private javax.swing.JMenuItem exitMenuItem;
@@ -406,8 +413,8 @@ public class VirusGUI extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator fileMenuSeparator;
     private javax.swing.JLabel headerLabel;
     private javax.swing.JSeparator headerSeparator;
-    static javax.swing.JComboBox<String> hostComboBox1;
-    static javax.swing.JComboBox<String> hostComboBox2;
+    public static javax.swing.JComboBox<String> hostComboBox1;
+    public static javax.swing.JComboBox<String> hostComboBox2;
     private javax.swing.JLabel hostLabel;
     private javax.swing.JRadioButton hostsRadioButton;
     private javax.swing.JRadioButton idRadioButton;
@@ -415,14 +422,14 @@ public class VirusGUI extends javax.swing.JFrame {
     private javax.swing.JMenuBar menuBar;
     static javax.swing.JMenuItem openMenuItem;
     private javax.swing.JScrollPane overlapScrollPane;
-    static javax.swing.JTextArea overlapTextArea;
-    static javax.swing.JButton searchButton;
-    static javax.swing.JTextField searchTextField;
+    public static javax.swing.JTextArea overlapTextArea;
+    private javax.swing.JButton searchButton;
+    public static javax.swing.JTextField searchTextField;
     private javax.swing.JPanel sortPanel;
     private javax.swing.ButtonGroup sortingButtonGroup;
     private javax.swing.JScrollPane virusScrollPane1;
     private javax.swing.JScrollPane virusScrollPane2;
-    static javax.swing.JTextArea virusTextArea1;
-    static javax.swing.JTextArea virusTextArea2;
+    public static javax.swing.JTextArea virusTextArea1;
+    public static javax.swing.JTextArea virusTextArea2;
     // End of variables declaration//GEN-END:variables
 }
