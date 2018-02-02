@@ -1,6 +1,6 @@
 /*
  * Virus App
- * Datum laatste versie: 1 februari 2018
+ * Datum laatste versie: 7 februari 2018
  * Functionaliteit: Het weergeven, sorteren en filteren van viruslijsten uit 
  * tsv-bestanden van Virus-Host DB en het bepalen van de overlap tussen deze 
  * lijsten. Specifiek ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv
@@ -49,11 +49,11 @@ public class VirusGUI extends javax.swing.JFrame {
         classRadioButton = new javax.swing.JRadioButton();
         hostsRadioButton = new javax.swing.JRadioButton();
         virusScrollPane1 = new javax.swing.JScrollPane();
-        virusTextArea1 = new javax.swing.JTextArea();
+        virusEditorPane1 = new javax.swing.JEditorPane();
         virusScrollPane2 = new javax.swing.JScrollPane();
-        virusTextArea2 = new javax.swing.JTextArea();
+        virusEditorPane2 = new javax.swing.JEditorPane();
         overlapScrollPane = new javax.swing.JScrollPane();
-        overlapTextArea = new javax.swing.JTextArea();
+        overlapEditorPane = new javax.swing.JEditorPane();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -77,8 +77,8 @@ public class VirusGUI extends javax.swing.JFrame {
         fileLabel.setText("File of URL");
 
         searchTextField.setText("Search");
-        searchTextField.setMaximumSize(new java.awt.Dimension(159, 20));
-        searchTextField.setMinimumSize(new java.awt.Dimension(159, 20));
+        searchTextField.setMaximumSize(new java.awt.Dimension(500, 20));
+        searchTextField.setMinimumSize(new java.awt.Dimension(500, 20));
         searchTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 searchTextFieldFocusGained(evt);
@@ -107,7 +107,10 @@ public class VirusGUI extends javax.swing.JFrame {
         classLabel.setText("Viral Classification");
 
         classComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(VirusLogica.CLASSIFICATIES));
-        classComboBox.setMaximumSize(new java.awt.Dimension(159, 20));
+        classComboBox.setMaximumSize(new java.awt.Dimension(591, 20));
+        classComboBox.setMinimumSize(new java.awt.Dimension(591, 20));
+        classComboBox.setName(""); // NOI18N
+        classComboBox.setPreferredSize(new java.awt.Dimension(591, 25));
         classComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 classComboBoxItemStateChanged(evt);
@@ -119,7 +122,9 @@ public class VirusGUI extends javax.swing.JFrame {
 
         hostComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<open file to select>" }));
         hostComboBox1.setEnabled(false);
-        hostComboBox1.setMaximumSize(new java.awt.Dimension(126, 20));
+        hostComboBox1.setMaximumSize(new java.awt.Dimension(280, 20));
+        hostComboBox1.setMinimumSize(new java.awt.Dimension(280, 20));
+        hostComboBox1.setPreferredSize(new java.awt.Dimension(280, 25));
         hostComboBox1.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 hostComboBox1ItemStateChanged(evt);
@@ -128,7 +133,9 @@ public class VirusGUI extends javax.swing.JFrame {
 
         hostComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<open file to select>" }));
         hostComboBox2.setEnabled(false);
-        hostComboBox2.setMaximumSize(new java.awt.Dimension(126, 20));
+        hostComboBox2.setMaximumSize(new java.awt.Dimension(280, 20));
+        hostComboBox2.setMinimumSize(new java.awt.Dimension(280, 20));
+        hostComboBox2.setPreferredSize(new java.awt.Dimension(280, 25));
         hostComboBox2.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 hostComboBox2ItemStateChanged(evt);
@@ -187,25 +194,36 @@ public class VirusGUI extends javax.swing.JFrame {
 
         virusScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Viruslijst"));
 
-        virusTextArea1.setColumns(20);
-        virusTextArea1.setRows(5);
-        virusTextArea1.setMaximumSize(new java.awt.Dimension(280, 150));
-        virusTextArea1.setMinimumSize(new java.awt.Dimension(280, 150));
-        virusScrollPane1.setViewportView(virusTextArea1);
+        virusEditorPane1.setEditable(false);
+        virusEditorPane1.setContentType("text/html"); // NOI18N
+        virusEditorPane1.addHyperlinkListener(new javax.swing.event.HyperlinkListener() {
+            public void hyperlinkUpdate(javax.swing.event.HyperlinkEvent evt) {
+                virusEditorPane1HyperlinkUpdate(evt);
+            }
+        });
+        virusScrollPane1.setViewportView(virusEditorPane1);
 
         virusScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Viruslijst"));
 
-        virusTextArea2.setColumns(20);
-        virusTextArea2.setRows(5);
-        virusTextArea2.setMaximumSize(new java.awt.Dimension(280, 150));
-        virusTextArea2.setMinimumSize(new java.awt.Dimension(280, 150));
-        virusScrollPane2.setViewportView(virusTextArea2);
+        virusEditorPane2.setEditable(false);
+        virusEditorPane2.setContentType("text/html"); // NOI18N
+        virusEditorPane2.addHyperlinkListener(new javax.swing.event.HyperlinkListener() {
+            public void hyperlinkUpdate(javax.swing.event.HyperlinkEvent evt) {
+                virusEditorPane2HyperlinkUpdate(evt);
+            }
+        });
+        virusScrollPane2.setViewportView(virusEditorPane2);
 
         overlapScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Overeenkomst"));
 
-        overlapTextArea.setColumns(20);
-        overlapTextArea.setRows(5);
-        overlapScrollPane.setViewportView(overlapTextArea);
+        overlapEditorPane.setEditable(false);
+        overlapEditorPane.setContentType("text/html"); // NOI18N
+        overlapEditorPane.addHyperlinkListener(new javax.swing.event.HyperlinkListener() {
+            public void hyperlinkUpdate(javax.swing.event.HyperlinkEvent evt) {
+                overlapEditorPaneHyperlinkUpdate(evt);
+            }
+        });
+        overlapScrollPane.setViewportView(overlapEditorPane);
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -232,16 +250,16 @@ public class VirusGUI extends javax.swing.JFrame {
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                                    .addComponent(searchTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(searchTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(searchButton))
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                                    .addComponent(hostComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGap(32, 32, 32)
+                                    .addComponent(hostComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(34, 34, 34)
                                     .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(virusScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                                        .addComponent(virusScrollPane2)
                                         .addComponent(hostComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addComponent(classComboBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 591, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(classComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(mainPanelLayout.createSequentialGroup()
                                 .addComponent(virusScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(312, 312, 312)))))
@@ -271,7 +289,7 @@ public class VirusGUI extends javax.swing.JFrame {
                     .addComponent(virusScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                     .addComponent(virusScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(overlapScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+                .addComponent(overlapScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -333,15 +351,15 @@ public class VirusGUI extends javax.swing.JFrame {
     private void hostComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_hostComboBox2ItemStateChanged
         hostComboBox1.setToolTipText((String) hostComboBox1.getSelectedItem());
         VirusLogica.updateLists();
-        VirusLogica.updateTextArea(virusTextArea2, VirusLogica.virusList2);
-        VirusLogica.updateTextArea(overlapTextArea, VirusLogica.overlapList);
+        VirusLogica.updateEditorPane(virusEditorPane2, VirusLogica.virusList2);
+        VirusLogica.updateEditorPane(overlapEditorPane, VirusLogica.overlapList);
     }//GEN-LAST:event_hostComboBox2ItemStateChanged
 
     private void hostComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_hostComboBox1ItemStateChanged
         hostComboBox1.setToolTipText((String) hostComboBox1.getSelectedItem());
         VirusLogica.updateLists();
-        VirusLogica.updateTextArea(virusTextArea1, VirusLogica.virusList1);
-        VirusLogica.updateTextArea(overlapTextArea, VirusLogica.overlapList);
+        VirusLogica.updateEditorPane(virusEditorPane1, VirusLogica.virusList1);
+        VirusLogica.updateEditorPane(overlapEditorPane, VirusLogica.overlapList);
     }//GEN-LAST:event_hostComboBox1ItemStateChanged
 
     private void classComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_classComboBoxItemStateChanged
@@ -367,6 +385,18 @@ public class VirusGUI extends javax.swing.JFrame {
             searchTextField.setText("");
         }
     }//GEN-LAST:event_searchTextFieldFocusGained
+
+    private void virusEditorPane1HyperlinkUpdate(javax.swing.event.HyperlinkEvent evt) {//GEN-FIRST:event_virusEditorPane1HyperlinkUpdate
+        VirusLogica.visitHyperlink(evt);
+    }//GEN-LAST:event_virusEditorPane1HyperlinkUpdate
+
+    private void virusEditorPane2HyperlinkUpdate(javax.swing.event.HyperlinkEvent evt) {//GEN-FIRST:event_virusEditorPane2HyperlinkUpdate
+        VirusLogica.visitHyperlink(evt);
+    }//GEN-LAST:event_virusEditorPane2HyperlinkUpdate
+
+    private void overlapEditorPaneHyperlinkUpdate(javax.swing.event.HyperlinkEvent evt) {//GEN-FIRST:event_overlapEditorPaneHyperlinkUpdate
+        VirusLogica.visitHyperlink(evt);
+    }//GEN-LAST:event_overlapEditorPaneHyperlinkUpdate
 
     /**
      * Maakt de GUI zichtbaar.
@@ -421,15 +451,15 @@ public class VirusGUI extends javax.swing.JFrame {
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     static javax.swing.JMenuItem openMenuItem;
+    public static javax.swing.JEditorPane overlapEditorPane;
     private javax.swing.JScrollPane overlapScrollPane;
-    public static javax.swing.JTextArea overlapTextArea;
     private javax.swing.JButton searchButton;
     public static javax.swing.JTextField searchTextField;
     private javax.swing.JPanel sortPanel;
     private javax.swing.ButtonGroup sortingButtonGroup;
+    public static javax.swing.JEditorPane virusEditorPane1;
+    public static javax.swing.JEditorPane virusEditorPane2;
     private javax.swing.JScrollPane virusScrollPane1;
     private javax.swing.JScrollPane virusScrollPane2;
-    public static javax.swing.JTextArea virusTextArea1;
-    public static javax.swing.JTextArea virusTextArea2;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,6 +1,6 @@
 /*
  * Virus App
- * Datum laatste versie: 1 februari 2018
+ * Datum laatste versie: 7 februari 2018
  * Functionaliteit: Het weergeven, sorteren en filteren van viruslijsten uit 
  * tsv-bestanden van Virus-Host DB en het bepalen van de overlap tussen deze 
  * lijsten. Specifiek ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv
@@ -9,13 +9,19 @@ package virusapplicatie;
 
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.io.*;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.event.HyperlinkEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
 
 /**
  * Bevat de logica voor het parsen van bestanden, inladen van data, sorteren,
@@ -27,12 +33,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class VirusLogica {
 
-    public static HashMap<String, HashSet<Virus>> host2VirusMap;
-    public static List<Virus> virusList1, virusList2, overlapList;
-    public static final String[] CLASSIFICATIES = {"Any", "dsRNA", "dsDNA", "ssRNA", "ssDNA", "Retrovirus", "Satelite virus and Virophage", "Viroid", "Other"};
-    public static final String FILEFORMAT_ERRORMESSAGE = "Onjuist bestandsformat. Zorg ervoor dat het bestand dezelfde structuur heeft als ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv.\n";
-    public static String filePath;
-    
+    static HashMap<String, HashSet<Virus>> host2VirusMap;
+    static List<Virus> virusList1, virusList2, overlapList;
+    static final String[] CLASSIFICATIES = {"Any", "dsRNA", "dsDNA", "ssRNA", "ssDNA", "Retrovirus", "Satelite virus and Virophage", "Viroid", "Other"};
+    static final String FILEFORMAT_ERRORMESSAGE = "Onjuist bestandsformat. Zorg ervoor dat het bestand dezelfde structuur heeft als ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv.\n";
+    static String filePath;
+
     /**
      * Opent FileChooser om file te selecteren.
      *
@@ -148,9 +154,9 @@ public class VirusLogica {
                 VirusGUI.hostComboBox1.setEnabled(true);
                 VirusGUI.hostComboBox2.setEnabled(true);
                 updateLists();
-                updateTextArea(VirusGUI.virusTextArea1, virusList1);
-                updateTextArea(VirusGUI.virusTextArea2, virusList2);
-                updateTextArea(VirusGUI.overlapTextArea, overlapList);
+                updateEditorPane(VirusGUI.virusEditorPane1, virusList1);
+                updateEditorPane(VirusGUI.virusEditorPane2, virusList2);
+                updateEditorPane(VirusGUI.overlapEditorPane, overlapList);
             }
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
@@ -166,42 +172,70 @@ public class VirusLogica {
      * geselecteerde items in de VirusGUI.
      */
     public static void updateLists() {
-        virusList1 = new ArrayList<>(host2VirusMap.get(VirusGUI.hostComboBox1.getSelectedItem().toString()));
-        virusList2 = new ArrayList<>(host2VirusMap.get(VirusGUI.hostComboBox2.getSelectedItem().toString()));
-        if (VirusGUI.classComboBox.getSelectedIndex() != 0) {
-            virusList1.removeIf(v -> !v.getClassificatie().equals((String) VirusGUI.classComboBox.getSelectedItem()));
-            virusList2.removeIf(v -> !v.getClassificatie().equals((String) VirusGUI.classComboBox.getSelectedItem()));
+        if (host2VirusMap != null) {
+            virusList1 = new ArrayList<>(host2VirusMap.get(VirusGUI.hostComboBox1.getSelectedItem().toString()));
+            virusList2 = new ArrayList<>(host2VirusMap.get(VirusGUI.hostComboBox2.getSelectedItem().toString()));
+            if (VirusGUI.classComboBox.getSelectedIndex() != 0) {
+                virusList1.removeIf(v -> !v.getClassificatie().equals((String) VirusGUI.classComboBox.getSelectedItem()));
+                virusList2.removeIf(v -> !v.getClassificatie().equals((String) VirusGUI.classComboBox.getSelectedItem()));
+            }
+            Collections.sort(virusList1);
+            Collections.sort(virusList2);
+            Set overlapSet = new HashSet(virusList1);
+            overlapSet.retainAll(virusList2);
+            overlapList = new ArrayList(overlapSet);
         }
-        Collections.sort(virusList1);
-        Collections.sort(virusList2);
-        Set overlapSet = new HashSet(virusList1);
-        overlapSet.retainAll(virusList2);
-        overlapList = new ArrayList(overlapSet);
     }
 
     /**
-     * Toont een gegeven virusljijst in een gegeven JTextArea.
+     * Toont Virus-host DB links van een gegeven virusljijst in een gegeven
+     * JEditorPane.
      *
-     * @param textArea
+     * @param editorPane
      * @param virusList
      */
-    public static void updateTextArea(JTextArea textArea, List<Virus> virusList) {
-        textArea.setText("");
+    public static void updateEditorPane(JEditorPane editorPane, List<Virus> virusList) {
+        editorPane.setText("");
+        HTMLDocument htmlDoc = (HTMLDocument) editorPane.getDocument();
+        HTMLEditorKit htmlKit = (HTMLEditorKit) editorPane.getEditorKit();
         virusList.forEach((Virus virus) -> {
-            textArea.append(virus.getId() + "\n");
+            try {
+                htmlKit.insertHTML(htmlDoc, htmlDoc.getLength(), "<a href=\"http://www.genome.jp/virushostdb/" + virus.getId() + "\">" + virus.getId() + "</a>", 0, 0, null);
+            } catch (BadLocationException | IOException ex) {
+                JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+            }
         });
     }
 
     /**
-     * Zorgt ervoor dat de viruslijsten en de weergave van JTextArea's worden
+     * Zorgt ervoor dat de viruslijsten en de weergave van JEditorPane's worden
      * bijgewerkt in de VirusGUI.
      */
     public static void updateAll() {
         updateLists();
-        updateTextArea(VirusGUI.virusTextArea1, virusList1);
-        updateTextArea(VirusGUI.overlapTextArea, overlapList);
-        updateTextArea(VirusGUI.virusTextArea2, virusList2);
-        updateTextArea(VirusGUI.overlapTextArea, overlapList);
+        updateEditorPane(VirusGUI.virusEditorPane1, virusList1);
+        updateEditorPane(VirusGUI.overlapEditorPane, overlapList);
+        updateEditorPane(VirusGUI.virusEditorPane2, virusList2);
+        updateEditorPane(VirusGUI.overlapEditorPane, overlapList);
+    }
+    
+    /**
+     * Bezoekt website bij het klikken op een hyperlink.
+     * 
+     * @param evt de HyperlinkEvent
+     */
+    public static void visitHyperlink(HyperlinkEvent evt) {
+        if (evt.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(evt.getURL().toURI());
+                } catch (URISyntaxException | IOException ex) {
+                    JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Het openen van hyperlinks wordt op uw computer niet ondersteund.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
 }
