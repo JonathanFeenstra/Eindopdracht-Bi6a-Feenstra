@@ -150,8 +150,10 @@ public class VirusLogica {
             }
             if (selectedFileReader != null) {
                 createHost2VirusMap(selectedFileReader);
-                VirusGUI.hostComboBox1.setModel(new DefaultComboBoxModel(host2VirusMap.keySet().toArray()));
-                VirusGUI.hostComboBox2.setModel(new DefaultComboBoxModel(host2VirusMap.keySet().toArray()));
+                String[] hostKeys = host2VirusMap.keySet().toArray(new String[host2VirusMap.size()]);
+                Arrays.sort(hostKeys);
+                VirusGUI.hostComboBox1.setModel(new DefaultComboBoxModel(hostKeys));
+                VirusGUI.hostComboBox2.setModel(new DefaultComboBoxModel(hostKeys));
                 VirusGUI.hostComboBox1.setEnabled(true);
                 VirusGUI.hostComboBox2.setEnabled(true);
                 updateLists();
