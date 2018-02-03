@@ -77,9 +77,9 @@ public class VirusLogica {
             TsvParser parser = new TsvParser(settings);
             String[] row;
             parser.beginParsing(reader);
-            parser.parseNext(); //Sla eerste regel met kopjes over
+            parser.parseNext(); // Sla eerste regel met kopjes over
             while ((row = parser.parseNext()) != null) {
-                if (row[7] != null) { //Virussen zonder host ID worden niet opgeslagen
+                if (row[7] != null) { // Virussen zonder host ID worden niet opgeslagen
                     int virusId = Integer.parseInt(row[0]), hostId = Integer.parseInt(row[7]);
                     Virus currVirus = new Virus(virusId, row[1], hostId, determineVirusClass(row[2]));
                     currVirus.addHost(hostId);
@@ -167,6 +167,7 @@ public class VirusLogica {
                 updateEditorPane(VirusGUI.virusEditorPane1, virusList1);
                 updateEditorPane(VirusGUI.virusEditorPane2, virusList2);
                 updateEditorPane(VirusGUI.overlapEditorPane, overlapList);
+                VirusGUI.saveMenuItem.setEnabled(true);
                 VirusGUI.copyMenu.setEnabled(true);
             }
         } catch (FileNotFoundException ex) {
@@ -227,17 +228,17 @@ public class VirusLogica {
                 virusBorder2 = (TitledBorder) VirusGUI.virusScrollPane2.getBorder(),
                 overlapBorder = (TitledBorder) VirusGUI.overlapScrollPane.getBorder();
         if (virusList1.size() > 0) {
-            virusBorder1.setTitle("Viruslijst (" + virusList1.size() + ")");
+            virusBorder1.setTitle("Viruslijst 1 (" + virusList1.size() + ")");
             VirusGUI.virusScrollPane1.repaint();
         } else {
-            virusBorder1.setTitle("Viruslijst");
+            virusBorder1.setTitle("Viruslijst 1");
             VirusGUI.virusScrollPane1.repaint();
         }
         if (virusList2.size() > 0) {
-            virusBorder2.setTitle("Viruslijst (" + virusList2.size() + ")");
+            virusBorder2.setTitle("Viruslijst 2 (" + virusList2.size() + ")");
             VirusGUI.virusScrollPane2.repaint();
         } else {
-            virusBorder2.setTitle("Viruslijst");
+            virusBorder2.setTitle("Viruslijst 2");
             VirusGUI.virusScrollPane2.repaint();
         }
         if (overlapList.size() > 0) {
@@ -296,6 +297,37 @@ public class VirusLogica {
             }
         } catch (BadLocationException ex) {
             JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * Slaat viruslijsten op in geselecteerd bestand.
+     */
+    public static void saveFile() {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileFilter(new FileNameExtensionFilter("Text files", "txt"));
+        int returnVal = chooser.showSaveDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            String fileLocation = chooser.getSelectedFile().getAbsolutePath();
+            if (!fileLocation.endsWith(".txt")) {
+                fileLocation += ".txt";
+            }
+            try (PrintWriter out = new PrintWriter(fileLocation)) { // Zorgt dat flush() en close() vanzelf worden aangeroepen
+                out.print("[Viruslijst 1]\r\n"); // \r\n is platformonafhankelijk i.t.t. println
+                virusList1.forEach((v) -> { // Omdat de getText() van de JEditorPanes een vreemde encoding heeft
+                    out.print(v + "\r\n");
+                });
+                out.print("\r\n[Viruslijst 2]\r\n");
+                virusList2.forEach((v) -> {
+                    out.print(v + "\r\n");
+                });
+                out.print("\r\n[Overeenkomst]\r\n");
+                overlapList.forEach((v) -> {
+                    out.print(v + "\r\n");
+                });
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 

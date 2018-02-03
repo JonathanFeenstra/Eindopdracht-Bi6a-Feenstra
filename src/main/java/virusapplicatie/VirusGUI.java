@@ -57,6 +57,7 @@ public class VirusGUI extends javax.swing.JFrame {
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
+        saveMenuItem = new javax.swing.JMenuItem();
         fileMenuSeparator = new javax.swing.JPopupMenu.Separator();
         exitMenuItem = new javax.swing.JMenuItem();
         toolsMenu = new javax.swing.JMenu();
@@ -197,7 +198,7 @@ public class VirusGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        virusScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Viruslijst"));
+        virusScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Viruslijst 1"));
         virusScrollPane1.setMaximumSize(new java.awt.Dimension(280, 150));
         virusScrollPane1.setPreferredSize(new java.awt.Dimension(280, 150));
 
@@ -211,7 +212,7 @@ public class VirusGUI extends javax.swing.JFrame {
         });
         virusScrollPane1.setViewportView(virusEditorPane1);
 
-        virusScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Viruslijst"));
+        virusScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Viruslijst 2"));
         virusScrollPane2.setMaximumSize(new java.awt.Dimension(280, 150));
         virusScrollPane2.setPreferredSize(new java.awt.Dimension(280, 150));
 
@@ -316,6 +317,17 @@ public class VirusGUI extends javax.swing.JFrame {
             }
         });
         fileMenu.add(openMenuItem);
+
+        saveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        saveMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/save.png"))); // NOI18N
+        saveMenuItem.setText("Save");
+        saveMenuItem.setEnabled(false);
+        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(saveMenuItem);
         fileMenu.add(fileMenuSeparator);
 
         exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
@@ -454,6 +466,10 @@ public class VirusGUI extends javax.swing.JFrame {
         VirusLogica.copyList(evt);
     }//GEN-LAST:event_copyOverlapItemActionPerformed
 
+    private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
+        VirusLogica.saveFile();
+    }//GEN-LAST:event_saveMenuItemActionPerformed
+
     /**
      * Maakt de GUI zichtbaar.
      *
@@ -513,6 +529,7 @@ public class VirusGUI extends javax.swing.JFrame {
     static javax.swing.JMenuItem openMenuItem;
     static javax.swing.JEditorPane overlapEditorPane;
     static javax.swing.JScrollPane overlapScrollPane;
+    static javax.swing.JMenuItem saveMenuItem;
     static javax.swing.JButton searchButton;
     static javax.swing.JTextField searchTextField;
     private javax.swing.JPanel sortPanel;
