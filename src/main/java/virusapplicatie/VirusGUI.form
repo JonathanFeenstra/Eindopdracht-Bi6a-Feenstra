@@ -121,6 +121,43 @@
             </Menu>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="helpMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Help"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jdocMenuItem">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/help.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="View Javadoc"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jdocMenuItemActionPerformed"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="8"/>
+              </AuxValues>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="helpMenuSeparator">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="dbMenuItem">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/database.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Visit Virus-Host DB"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dbMenuItemActionPerformed"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="8"/>
+              </AuxValues>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
       </SubComponents>
     </Menu>
   </NonVisualComponents>
@@ -511,7 +548,7 @@
                 <EventHandler event="hyperlinkUpdate" listener="javax.swing.event.HyperlinkListener" parameters="javax.swing.event.HyperlinkEvent" handler="virusEditorPane1HyperlinkUpdate"/>
               </Events>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JEditorPane() {&#xd;&#xa;    @Override&#xd;&#xa;    public String getToolTipText(java.awt.event.MouseEvent evt) {&#xd;&#xa;        int pos = viewToModel(evt.getPoint());&#xd;&#xa;        if (pos &gt;= 0) {&#xd;&#xa;            javax.swing.text.html.HTMLDocument hdoc = (javax.swing.text.html.HTMLDocument) getDocument();&#xd;&#xa;            javax.swing.text.Element e = hdoc.getCharacterElement(pos);&#xd;&#xa;            try {&#xd;&#xa;                for (Virus v: VirusLogica.virusList1) {&#xd;&#xa;                    if (v.getId() == Integer.parseInt(hdoc.getText(e.getStartOffset(), e.getEndOffset() - e.getStartOffset()))) {&#xd;&#xa;                        return v.getSoort();&#xd;&#xa;                    }&#xd;&#xa;                }&#xd;&#xa;            } catch (Exception ex) {&#xd;&#xa;            }&#xd;&#xa;        }&#xd;&#xa;        return null;&#xd;&#xa;    }&#xd;&#xa;};&#xd;&#xa;javax.swing.ToolTipManager.sharedInstance().registerComponent(virusEditorPane1);&#xd;&#xa;"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JEditorPane() {&#xd;&#xa;    @Override&#xd;&#xa;    public String getToolTipText(java.awt.event.MouseEvent evt) {&#xd;&#xa;        int pos = viewToModel(evt.getPoint());&#xd;&#xa;        if (pos &gt;= 0) {&#xd;&#xa;            javax.swing.text.html.HTMLDocument hdoc = (javax.swing.text.html.HTMLDocument) getDocument();&#xd;&#xa;            javax.swing.text.Element e = hdoc.getCharacterElement(pos);&#xd;&#xa;            try {&#xd;&#xa;                for (Virus v: VirusLogica.virusList1) {&#xd;&#xa;                    if (v.getId() == Integer.parseInt(hdoc.getText(e.getStartOffset(), e.getEndOffset() - e.getStartOffset()))) {&#xd;&#xa;                        return v.getSoort();&#xd;&#xa;                    }&#xd;&#xa;                }&#xd;&#xa;            } catch (Exception ex) {&#xd;&#xa;            }&#xd;&#xa;        }&#xd;&#xa;        return null;&#xd;&#xa;    }&#xd;&#xa;};&#xd;&#xa;javax.swing.ToolTipManager.sharedInstance().registerComponent(virusEditorPane1);&#xd;&#xa;javax.swing.text.DefaultCaret virusCaret1 = (javax.swing.text.DefaultCaret) virusEditorPane1.getCaret();&#xd;&#xa;virusCaret1.setUpdatePolicy(javax.swing.text.DefaultCaret.NEVER_UPDATE);&#xd;&#xa;"/>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="8"/>
               </AuxValues>
             </Component>
@@ -548,7 +585,7 @@
                 <EventHandler event="hyperlinkUpdate" listener="javax.swing.event.HyperlinkListener" parameters="javax.swing.event.HyperlinkEvent" handler="virusEditorPane2HyperlinkUpdate"/>
               </Events>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JEditorPane() {&#xd;&#xa;    @Override&#xd;&#xa;    public String getToolTipText(java.awt.event.MouseEvent evt) {&#xd;&#xa;        int pos = viewToModel(evt.getPoint());&#xd;&#xa;        if (pos &gt;= 0) {&#xd;&#xa;            javax.swing.text.html.HTMLDocument hdoc = (javax.swing.text.html.HTMLDocument) getDocument();&#xd;&#xa;            javax.swing.text.Element e = hdoc.getCharacterElement(pos);&#xd;&#xa;            try {&#xd;&#xa;                for (Virus v: VirusLogica.virusList2) {&#xd;&#xa;                    if (v.getId() == Integer.parseInt(hdoc.getText(e.getStartOffset(), e.getEndOffset() - e.getStartOffset()))) {&#xd;&#xa;                        return v.getSoort();&#xd;&#xa;                    }&#xd;&#xa;                }&#xd;&#xa;            } catch (Exception ex) {&#xd;&#xa;            }&#xd;&#xa;        }&#xd;&#xa;        return null;&#xd;&#xa;    }&#xd;&#xa;};&#xd;&#xa;javax.swing.ToolTipManager.sharedInstance().registerComponent(virusEditorPane2);&#xd;&#xa;"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JEditorPane() {&#xd;&#xa;    @Override&#xd;&#xa;    public String getToolTipText(java.awt.event.MouseEvent evt) {&#xd;&#xa;        int pos = viewToModel(evt.getPoint());&#xd;&#xa;        if (pos &gt;= 0) {&#xd;&#xa;            javax.swing.text.html.HTMLDocument hdoc = (javax.swing.text.html.HTMLDocument) getDocument();&#xd;&#xa;            javax.swing.text.Element e = hdoc.getCharacterElement(pos);&#xd;&#xa;            try {&#xd;&#xa;                for (Virus v: VirusLogica.virusList2) {&#xd;&#xa;                    if (v.getId() == Integer.parseInt(hdoc.getText(e.getStartOffset(), e.getEndOffset() - e.getStartOffset()))) {&#xd;&#xa;                        return v.getSoort();&#xd;&#xa;                    }&#xd;&#xa;                }&#xd;&#xa;            } catch (Exception ex) {&#xd;&#xa;            }&#xd;&#xa;        }&#xd;&#xa;        return null;&#xd;&#xa;    }&#xd;&#xa;};&#xd;&#xa;javax.swing.ToolTipManager.sharedInstance().registerComponent(virusEditorPane2);&#xd;&#xa;javax.swing.text.DefaultCaret virusCaret2 = (javax.swing.text.DefaultCaret) virusEditorPane2.getCaret();&#xd;&#xa;virusCaret2.setUpdatePolicy(javax.swing.text.DefaultCaret.NEVER_UPDATE);"/>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="8"/>
               </AuxValues>
             </Component>
@@ -579,7 +616,7 @@
                 <EventHandler event="hyperlinkUpdate" listener="javax.swing.event.HyperlinkListener" parameters="javax.swing.event.HyperlinkEvent" handler="overlapEditorPaneHyperlinkUpdate"/>
               </Events>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JEditorPane() {&#xd;&#xa;    @Override&#xd;&#xa;    public String getToolTipText(java.awt.event.MouseEvent evt) {&#xd;&#xa;        int pos = viewToModel(evt.getPoint());&#xd;&#xa;        if (pos &gt;= 0) {&#xd;&#xa;            javax.swing.text.html.HTMLDocument hdoc = (javax.swing.text.html.HTMLDocument) getDocument();&#xd;&#xa;            javax.swing.text.Element e = hdoc.getCharacterElement(pos);&#xd;&#xa;            try {&#xd;&#xa;                for (Virus v: VirusLogica.overlapList) {&#xd;&#xa;                    if (v.getId() == Integer.parseInt(hdoc.getText(e.getStartOffset(), e.getEndOffset() - e.getStartOffset()))) {&#xd;&#xa;                        return v.getSoort();&#xd;&#xa;                    }&#xd;&#xa;                }&#xd;&#xa;            } catch (Exception ex) {&#xd;&#xa;            }&#xd;&#xa;        }&#xd;&#xa;        return null;&#xd;&#xa;    }&#xd;&#xa;};&#xd;&#xa;javax.swing.ToolTipManager.sharedInstance().registerComponent(overlapEditorPane);&#xd;&#xa;"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JEditorPane() {&#xd;&#xa;    @Override&#xd;&#xa;    public String getToolTipText(java.awt.event.MouseEvent evt) {&#xd;&#xa;        int pos = viewToModel(evt.getPoint());&#xd;&#xa;        if (pos &gt;= 0) {&#xd;&#xa;            javax.swing.text.html.HTMLDocument hdoc = (javax.swing.text.html.HTMLDocument) getDocument();&#xd;&#xa;            javax.swing.text.Element e = hdoc.getCharacterElement(pos);&#xd;&#xa;            try {&#xd;&#xa;                for (Virus v: VirusLogica.overlapList) {&#xd;&#xa;                    if (v.getId() == Integer.parseInt(hdoc.getText(e.getStartOffset(), e.getEndOffset() - e.getStartOffset()))) {&#xd;&#xa;                        return v.getSoort();&#xd;&#xa;                    }&#xd;&#xa;                }&#xd;&#xa;            } catch (Exception ex) {&#xd;&#xa;            }&#xd;&#xa;        }&#xd;&#xa;        return null;&#xd;&#xa;    }&#xd;&#xa;};&#xd;&#xa;javax.swing.ToolTipManager.sharedInstance().registerComponent(overlapEditorPane);&#xd;&#xa;javax.swing.text.DefaultCaret overlapCaret = (javax.swing.text.DefaultCaret) overlapEditorPane.getCaret();&#xd;&#xa;overlapCaret.setUpdatePolicy(javax.swing.text.DefaultCaret.NEVER_UPDATE);"/>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="8"/>
               </AuxValues>
             </Component>

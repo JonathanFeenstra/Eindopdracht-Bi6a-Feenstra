@@ -47,7 +47,7 @@ public class Virus implements Comparable {
     /**
      * Virus ID getter
      *
-     * @return virus ID
+     * @return de virus ID
      */
     public int getId() {
         return id;
@@ -56,7 +56,7 @@ public class Virus implements Comparable {
     /**
      * Virus ID setter
      *
-     * @param id
+     * @param id de virus ID
      */
     public void setId(int id) {
         this.id = id;
@@ -65,7 +65,7 @@ public class Virus implements Comparable {
     /**
      * Soort getter
      *
-     * @return virussoort
+     * @return de virussoort
      */
     public String getSoort() {
         return soort;
@@ -74,7 +74,7 @@ public class Virus implements Comparable {
     /**
      * Soort setter
      *
-     * @param soort
+     * @param soort de virussoort
      */
     public void setSoort(String soort) {
         this.soort = soort;
@@ -83,7 +83,7 @@ public class Virus implements Comparable {
     /**
      * Classificatie getter
      *
-     * @return virusclassificatie
+     * @return de virusclassificatie
      */
     public String getClassificatie() {
         return classificatie;
@@ -92,25 +92,25 @@ public class Virus implements Comparable {
     /**
      * Classificatie setter
      *
-     * @param classificatie
+     * @param classificatie de virusclassificatie
      */
     public void setClassificatie(String classificatie) {
         this.classificatie = classificatie;
     }
     
     /**
-     * Hostlist setter
+     * Hostlist getter
      * 
-     * @return hostlist
+     * @return de hostlijst
      */
     public ArrayList<Integer> getHostList() {
         return hostList;
     }
 
     /**
-     * Hostlist getter
+     * Hostlist setter
      * 
-     * @param hostList
+     * @param hostList de hostlijst
      */
     public void setHostList(ArrayList<Integer> hostList) {
         this.hostList = hostList;
@@ -119,7 +119,7 @@ public class Virus implements Comparable {
     /**
      * Voegt host ID toe
      *
-     * @param hostId
+     * @param hostId de host ID
      */
     public void addHost(int hostId) {
         this.hostList.add(hostId);

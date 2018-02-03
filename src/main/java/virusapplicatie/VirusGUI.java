@@ -69,6 +69,8 @@ public class VirusGUI extends javax.swing.JFrame {
             }
         };
         javax.swing.ToolTipManager.sharedInstance().registerComponent(virusEditorPane1);
+        javax.swing.text.DefaultCaret virusCaret1 = (javax.swing.text.DefaultCaret) virusEditorPane1.getCaret();
+        virusCaret1.setUpdatePolicy(javax.swing.text.DefaultCaret.NEVER_UPDATE);
         ;
         virusScrollPane2 = new javax.swing.JScrollPane();
         virusEditorPane2 = new javax.swing.JEditorPane() {
@@ -91,7 +93,8 @@ public class VirusGUI extends javax.swing.JFrame {
             }
         };
         javax.swing.ToolTipManager.sharedInstance().registerComponent(virusEditorPane2);
-        ;
+        javax.swing.text.DefaultCaret virusCaret2 = (javax.swing.text.DefaultCaret) virusEditorPane2.getCaret();
+        virusCaret2.setUpdatePolicy(javax.swing.text.DefaultCaret.NEVER_UPDATE);
         overlapScrollPane = new javax.swing.JScrollPane();
         overlapEditorPane = new javax.swing.JEditorPane() {
             @Override
@@ -113,7 +116,8 @@ public class VirusGUI extends javax.swing.JFrame {
             }
         };
         javax.swing.ToolTipManager.sharedInstance().registerComponent(overlapEditorPane);
-        ;
+        javax.swing.text.DefaultCaret overlapCaret = (javax.swing.text.DefaultCaret) overlapEditorPane.getCaret();
+        overlapCaret.setUpdatePolicy(javax.swing.text.DefaultCaret.NEVER_UPDATE);
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -125,6 +129,10 @@ public class VirusGUI extends javax.swing.JFrame {
         copyList1Item = new javax.swing.JMenuItem();
         copyList2Item = new javax.swing.JMenuItem();
         copyOverlapItem = new javax.swing.JMenuItem();
+        helpMenu = new javax.swing.JMenu();
+        jdocMenuItem = new javax.swing.JMenuItem();
+        helpMenuSeparator = new javax.swing.JPopupMenu.Separator();
+        dbMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Virus App - © Jonathan Feenstra");
@@ -436,6 +444,29 @@ public class VirusGUI extends javax.swing.JFrame {
 
         menuBar.add(toolsMenu);
 
+        helpMenu.setText("Help");
+
+        jdocMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/help.png"))); // NOI18N
+        jdocMenuItem.setText("View Javadoc");
+        jdocMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jdocMenuItemActionPerformed(evt);
+            }
+        });
+        helpMenu.add(jdocMenuItem);
+        helpMenu.add(helpMenuSeparator);
+
+        dbMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/database.png"))); // NOI18N
+        dbMenuItem.setText("Visit Virus-Host DB");
+        dbMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dbMenuItemActionPerformed(evt);
+            }
+        });
+        helpMenu.add(dbMenuItem);
+
+        menuBar.add(helpMenu);
+
         setJMenuBar(menuBar);
 
         pack();
@@ -530,6 +561,14 @@ public class VirusGUI extends javax.swing.JFrame {
         VirusLogica.saveFile();
     }//GEN-LAST:event_saveMenuItemActionPerformed
 
+    private void dbMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dbMenuItemActionPerformed
+        VirusLogica.visitHyperlink(evt);
+    }//GEN-LAST:event_dbMenuItemActionPerformed
+
+    private void jdocMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jdocMenuItemActionPerformed
+        VirusLogica.visitHyperlink(evt);
+    }//GEN-LAST:event_jdocMenuItemActionPerformed
+
     /**
      * Maakt de GUI zichtbaar.
      *
@@ -573,17 +612,21 @@ public class VirusGUI extends javax.swing.JFrame {
     static javax.swing.JMenuItem copyList2Item;
     static javax.swing.JMenu copyMenu;
     static javax.swing.JMenuItem copyOverlapItem;
+    static javax.swing.JMenuItem dbMenuItem;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JLabel fileLabel;
     static javax.swing.JMenu fileMenu;
     private javax.swing.JPopupMenu.Separator fileMenuSeparator;
     private javax.swing.JLabel headerLabel;
     private javax.swing.JSeparator headerSeparator;
+    private javax.swing.JMenu helpMenu;
+    private javax.swing.JPopupMenu.Separator helpMenuSeparator;
     static javax.swing.JComboBox<String> hostComboBox1;
     static javax.swing.JComboBox<String> hostComboBox2;
     private javax.swing.JLabel hostLabel;
     private javax.swing.JRadioButton hostsRadioButton;
     private javax.swing.JRadioButton idRadioButton;
+    static javax.swing.JMenuItem jdocMenuItem;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     static javax.swing.JMenuItem openMenuItem;

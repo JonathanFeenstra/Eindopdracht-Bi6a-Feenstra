@@ -14,9 +14,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.net.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -40,6 +38,7 @@ public class VirusLogica {
     static ArrayList<Virus> virusList1, virusList2, overlapList;
     static final String[] CLASSIFICATIES = {"Any", "dsRNA", "dsDNA", "ssRNA",
         "ssDNA", "Retrovirus", "Satelite virus and Virophage", "Viroid", "Other"};
+    private static final String LINK_UNSUPPORTED_MSG = "Het openen van links wordt op uw computer niet ondersteund.";
     private static String filePath;
 
     /**
@@ -90,8 +89,8 @@ public class VirusLogica {
                         hostToVirusMap.put(key, (HashSet) virusSet.clone());
                     } else {
                         hostToVirusMap.get(key).add(currVirus);
-                        hostToVirusMap.get(key).stream().filter((virus) ->
-                                (!virus.getHostList().contains(hostId))).forEachOrdered((virus) -> {
+                        hostToVirusMap.get(key).stream().filter((virus)
+                                -> (!virus.getHostList().contains(hostId))).forEachOrdered((virus) -> {
                             virus.addHost(hostId);
                         });
                     }
@@ -218,9 +217,9 @@ public class VirusLogica {
         HTMLEditorKit htmlKit = (HTMLEditorKit) editorPane.getEditorKit();
         virusList.forEach((Virus virus) -> {
             try {
-                htmlKit.insertHTML(htmlDoc, htmlDoc.getLength(), 
+                htmlKit.insertHTML(htmlDoc, htmlDoc.getLength(),
                         "<a href=\"http://www.genome.jp/virushostdb/"
-                                + virus.getId() + "\">" + virus.getId() + "</a>", 0, 0, null);
+                        + virus.getId() + "\">" + virus.getId() + "</a>", 0, 0, null);
             } catch (BadLocationException | IOException ex) {
                 JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
             }
@@ -283,8 +282,31 @@ public class VirusLogica {
                     JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Het openen van hyperlinks wordt op uw computer niet ondersteund.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, LINK_UNSUPPORTED_MSG, "Error", JOptionPane.ERROR_MESSAGE);
             }
+        }
+    }
+
+    /**
+     * Overloading: open Javadoc of Virus-Host DB website afhankelijk van wat er
+     * is aangeklikt.
+     *
+     * @param evt de ActionEvent van het aangeklikte JMenuItem
+     */
+    public static void visitHyperlink(ActionEvent evt) {
+        if (Desktop.isDesktopSupported()) {
+            try {
+                if (evt.getSource() == VirusGUI.dbMenuItem) {
+                    Desktop.getDesktop().browse(new URI("http://www.genome.jp/virushostdb/"));
+                } else if (evt.getSource() == VirusGUI.jdocMenuItem) {
+                    File javaDoc = new File(System.getProperty("user.dir") + "\\target\\site\\apidocs\\index.html");
+                    Desktop.getDesktop().browse(javaDoc.toURI());
+                }
+            } catch (URISyntaxException | IOException ex) {
+                JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, LINK_UNSUPPORTED_MSG, "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
