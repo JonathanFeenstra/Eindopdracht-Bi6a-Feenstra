@@ -10,6 +10,8 @@ package virusapplicatie;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
 import java.awt.Desktop;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.io.*;
 import java.net.MalformedURLException;
@@ -34,11 +36,10 @@ import javax.swing.text.html.HTMLEditorKit;
  */
 public class VirusLogica {
 
-    static HashMap<String, HashSet<Virus>> host2VirusMap;
-    static List<Virus> virusList1, virusList2, overlapList;
+    private static HashMap<String, HashSet<Virus>> hostToVirusMap;
+    static ArrayList<Virus> virusList1, virusList2, overlapList;
     static final String[] CLASSIFICATIES = {"Any", "dsRNA", "dsDNA", "ssRNA", "ssDNA", "Retrovirus", "Satelite virus and Virophage", "Viroid", "Other"};
-    static final String FILEFORMAT_ERRORMESSAGE = "Onjuist bestandsformat. Zorg ervoor dat het bestand dezelfde structuur heeft als ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv.\n";
-    static String filePath;
+    private static String filePath;
 
     /**
      * Opent FileChooser om file te selecteren.
@@ -63,13 +64,13 @@ public class VirusLogica {
     }
 
     /**
-     * Maakt HashMap van (host ID + naam) naar HashSet van Virussen.
+     * Maakt HashMap van (host ID + naam) naar HashSet van Virus objecten.
      *
      * @param reader van de te lezen tsv-file
      */
-    public static void createHost2VirusMap(Reader reader) {
+    public static void createHostToVirusMap(Reader reader) {
         try {
-            host2VirusMap = new HashMap<>();
+            hostToVirusMap = new HashMap<>();
             HashSet<Virus> virusSet = new HashSet<>();
             TsvParserSettings settings = new TsvParserSettings();
             settings.getFormat().setLineSeparator("\n");
@@ -84,11 +85,11 @@ public class VirusLogica {
                     currVirus.addHost(hostId);
                     virusSet.add(currVirus);
                     String key = row[7] + " (" + row[8] + ")";
-                    if (!host2VirusMap.containsKey(key)) {
-                        host2VirusMap.put(key, (HashSet) virusSet.clone());
+                    if (!hostToVirusMap.containsKey(key)) {
+                        hostToVirusMap.put(key, (HashSet) virusSet.clone());
                     } else {
-                        host2VirusMap.get(key).add(currVirus);
-                        host2VirusMap.get(key).stream().filter((virus) -> (!virus.getHostList().contains(hostId))).forEachOrdered((virus) -> {
+                        hostToVirusMap.get(key).add(currVirus);
+                        hostToVirusMap.get(key).stream().filter((virus) -> (!virus.getHostList().contains(hostId))).forEachOrdered((virus) -> {
                             virus.addHost(hostId);
                         });
                     }
@@ -96,13 +97,19 @@ public class VirusLogica {
                 }
             }
             parser.stopParsing();
-            reader.close();
+
         } catch (NumberFormatException | IndexOutOfBoundsException ex) {
-            JOptionPane.showMessageDialog(null, FILEFORMAT_ERRORMESSAGE + ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Onjuist bestandsformat./n"
+                    + "Zorg ervoor dat het bestand dezelfde structuur heeft als ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv.\n"
+                    + ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
@@ -149,8 +156,8 @@ public class VirusLogica {
                 }
             }
             if (selectedFileReader != null) {
-                createHost2VirusMap(selectedFileReader);
-                String[] hostKeys = host2VirusMap.keySet().toArray(new String[host2VirusMap.size()]);
+                createHostToVirusMap(selectedFileReader);
+                String[] hostKeys = hostToVirusMap.keySet().toArray(new String[hostToVirusMap.size()]);
                 Arrays.sort(hostKeys);
                 VirusGUI.hostComboBox1.setModel(new DefaultComboBoxModel(hostKeys));
                 VirusGUI.hostComboBox2.setModel(new DefaultComboBoxModel(hostKeys));
@@ -160,6 +167,7 @@ public class VirusLogica {
                 updateEditorPane(VirusGUI.virusEditorPane1, virusList1);
                 updateEditorPane(VirusGUI.virusEditorPane2, virusList2);
                 updateEditorPane(VirusGUI.overlapEditorPane, overlapList);
+                VirusGUI.copyMenu.setEnabled(true);
             }
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
@@ -175,9 +183,9 @@ public class VirusLogica {
      * geselecteerde items in de VirusGUI.
      */
     public static void updateLists() {
-        if (host2VirusMap != null) {
-            virusList1 = new ArrayList<>(host2VirusMap.get(VirusGUI.hostComboBox1.getSelectedItem().toString()));
-            virusList2 = new ArrayList<>(host2VirusMap.get(VirusGUI.hostComboBox2.getSelectedItem().toString()));
+        if (hostToVirusMap != null) {
+            virusList1 = new ArrayList<>(hostToVirusMap.get(VirusGUI.hostComboBox1.getSelectedItem().toString()));
+            virusList2 = new ArrayList<>(hostToVirusMap.get(VirusGUI.hostComboBox2.getSelectedItem().toString()));
             if (VirusGUI.classComboBox.getSelectedIndex() != 0) {
                 virusList1.removeIf(v -> !v.getClassificatie().equals((String) VirusGUI.classComboBox.getSelectedItem()));
                 virusList2.removeIf(v -> !v.getClassificatie().equals((String) VirusGUI.classComboBox.getSelectedItem()));
@@ -192,11 +200,11 @@ public class VirusLogica {
     }
 
     /**
-     * Toont Virus-host DB links van een gegeven virusljijst in een gegeven
+     * Toont Virus-Host DB links van een gegeven virusljijst in een gegeven
      * JEditorPane.
      *
-     * @param editorPane
-     * @param virusList
+     * @param editorPane de te vullen JEditorPane
+     * @param virusList de te weergeven viruslijst
      */
     public static void updateEditorPane(JEditorPane editorPane, List<Virus> virusList) {
         editorPane.setText("");
@@ -269,6 +277,25 @@ public class VirusLogica {
             } else {
                 JOptionPane.showMessageDialog(null, "Het openen van hyperlinks wordt op uw computer niet ondersteund.", "Error", JOptionPane.ERROR_MESSAGE);
             }
+        }
+    }
+
+    /**
+     * Kopieert geselecteerde viruslijst naar het klembord.
+     *
+     * @param evt de ActionEvent van het aangeklikte JMenuItem
+     */
+    public static void copyList(ActionEvent evt) {
+        try {
+            if (evt.getSource() == VirusGUI.copyList1Item) {
+                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(VirusGUI.virusEditorPane1.getDocument().getText(0, VirusGUI.virusEditorPane1.getDocument().getLength()).trim()), null);
+            } else if (evt.getSource() == VirusGUI.copyList2Item) {
+                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(VirusGUI.virusEditorPane2.getDocument().getText(0, VirusGUI.virusEditorPane2.getDocument().getLength()).trim()), null);
+            } else if (evt.getSource() == VirusGUI.copyOverlapItem) {
+                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(VirusGUI.overlapEditorPane.getDocument().getText(0, VirusGUI.overlapEditorPane.getDocument().getLength()).trim()), null);
+            }
+        } catch (BadLocationException ex) {
+            JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
         }
     }
 

@@ -31,10 +31,10 @@ public class Virus implements Comparable {
     /**
      * Constructor
      *
-     * @param id
-     * @param soort 
-     * @param hostId
-     * @param classificatie
+     * @param id de virus ID
+     * @param soort de virussoortnaam
+     * @param hostId de host ID
+     * @param classificatie de virusclassifiecatie zoals op Virus-Host DB
      */
     public Virus(int id, String soort, int hostId, String classificatie) {
         this.id = id;
@@ -142,6 +142,6 @@ public class Virus implements Comparable {
 
     @Override
     public String toString() {
-        return Integer.toString(id) + " " + soort;
+        return Integer.toString(id);
     }
 }

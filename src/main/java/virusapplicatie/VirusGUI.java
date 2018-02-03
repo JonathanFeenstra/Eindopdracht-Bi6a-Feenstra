@@ -9,7 +9,7 @@ package virusapplicatie;
 
 /**
  * GUI-class met de aanroep van methoden bij het uitvoeren van bepaalde acties.
- * 
+ *
  * @author Jonathan Feenstra
  * @since JDK 1.8
  * @version 1.0
@@ -59,6 +59,11 @@ public class VirusGUI extends javax.swing.JFrame {
         openMenuItem = new javax.swing.JMenuItem();
         fileMenuSeparator = new javax.swing.JPopupMenu.Separator();
         exitMenuItem = new javax.swing.JMenuItem();
+        toolsMenu = new javax.swing.JMenu();
+        copyMenu = new javax.swing.JMenu();
+        copyList1Item = new javax.swing.JMenuItem();
+        copyList2Item = new javax.swing.JMenuItem();
+        copyOverlapItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Virus App - © Jonathan Feenstra");
@@ -120,7 +125,7 @@ public class VirusGUI extends javax.swing.JFrame {
         hostLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         hostLabel.setText("Host ID");
 
-        hostComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<open file to select>" }));
+        hostComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Open een file of URL" }));
         hostComboBox1.setEnabled(false);
         hostComboBox1.setMaximumSize(new java.awt.Dimension(280, 20));
         hostComboBox1.setMinimumSize(new java.awt.Dimension(280, 20));
@@ -131,7 +136,7 @@ public class VirusGUI extends javax.swing.JFrame {
             }
         });
 
-        hostComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<open file to select>" }));
+        hostComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Open een file of URL" }));
         hostComboBox2.setEnabled(false);
         hostComboBox2.setMaximumSize(new java.awt.Dimension(280, 20));
         hostComboBox2.setMinimumSize(new java.awt.Dimension(280, 20));
@@ -325,6 +330,40 @@ public class VirusGUI extends javax.swing.JFrame {
 
         menuBar.add(fileMenu);
 
+        toolsMenu.setText("Tools");
+
+        copyMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/copy.png"))); // NOI18N
+        copyMenu.setText("Copy viruslist");
+        copyMenu.setEnabled(false);
+
+        copyList1Item.setText("Viruslijst 1");
+        copyList1Item.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copyList1ItemActionPerformed(evt);
+            }
+        });
+        copyMenu.add(copyList1Item);
+
+        copyList2Item.setText("Viruslijst 2");
+        copyList2Item.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copyList2ItemActionPerformed(evt);
+            }
+        });
+        copyMenu.add(copyList2Item);
+
+        copyOverlapItem.setText("Overeenkomst");
+        copyOverlapItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copyOverlapItemActionPerformed(evt);
+            }
+        });
+        copyMenu.add(copyOverlapItem);
+
+        toolsMenu.add(copyMenu);
+
+        menuBar.add(toolsMenu);
+
         setJMenuBar(menuBar);
 
         pack();
@@ -403,6 +442,18 @@ public class VirusGUI extends javax.swing.JFrame {
         VirusLogica.visitHyperlink(evt);
     }//GEN-LAST:event_overlapEditorPaneHyperlinkUpdate
 
+    private void copyList1ItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyList1ItemActionPerformed
+        VirusLogica.copyList(evt);
+    }//GEN-LAST:event_copyList1ItemActionPerformed
+
+    private void copyList2ItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyList2ItemActionPerformed
+        VirusLogica.copyList(evt);
+    }//GEN-LAST:event_copyList2ItemActionPerformed
+
+    private void copyOverlapItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyOverlapItemActionPerformed
+        VirusLogica.copyList(evt);
+    }//GEN-LAST:event_copyOverlapItemActionPerformed
+
     /**
      * Maakt de GUI zichtbaar.
      *
@@ -442,6 +493,10 @@ public class VirusGUI extends javax.swing.JFrame {
     static javax.swing.JComboBox<String> classComboBox;
     private javax.swing.JLabel classLabel;
     private javax.swing.JRadioButton classRadioButton;
+    static javax.swing.JMenuItem copyList1Item;
+    static javax.swing.JMenuItem copyList2Item;
+    static javax.swing.JMenu copyMenu;
+    static javax.swing.JMenuItem copyOverlapItem;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JLabel fileLabel;
     static javax.swing.JMenu fileMenu;
@@ -462,6 +517,7 @@ public class VirusGUI extends javax.swing.JFrame {
     static javax.swing.JTextField searchTextField;
     private javax.swing.JPanel sortPanel;
     private javax.swing.ButtonGroup sortingButtonGroup;
+    private javax.swing.JMenu toolsMenu;
     static javax.swing.JEditorPane virusEditorPane1;
     static javax.swing.JEditorPane virusEditorPane2;
     static javax.swing.JScrollPane virusScrollPane1;
