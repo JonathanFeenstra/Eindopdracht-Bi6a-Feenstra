@@ -139,9 +139,4 @@ public class Virus implements Comparable {
                 return 0;
         }
     }
-
-    @Override
-    public String toString() {
-        return Integer.toString(id);
-    }
 }

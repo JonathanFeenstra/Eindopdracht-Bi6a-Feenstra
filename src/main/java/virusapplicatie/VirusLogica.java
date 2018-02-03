@@ -38,7 +38,8 @@ public class VirusLogica {
 
     private static HashMap<String, HashSet<Virus>> hostToVirusMap;
     static ArrayList<Virus> virusList1, virusList2, overlapList;
-    static final String[] CLASSIFICATIES = {"Any", "dsRNA", "dsDNA", "ssRNA", "ssDNA", "Retrovirus", "Satelite virus and Virophage", "Viroid", "Other"};
+    static final String[] CLASSIFICATIES = {"Any", "dsRNA", "dsDNA", "ssRNA",
+        "ssDNA", "Retrovirus", "Satelite virus and Virophage", "Viroid", "Other"};
     private static String filePath;
 
     /**
@@ -89,7 +90,8 @@ public class VirusLogica {
                         hostToVirusMap.put(key, (HashSet) virusSet.clone());
                     } else {
                         hostToVirusMap.get(key).add(currVirus);
-                        hostToVirusMap.get(key).stream().filter((virus) -> (!virus.getHostList().contains(hostId))).forEachOrdered((virus) -> {
+                        hostToVirusMap.get(key).stream().filter((virus) ->
+                                (!virus.getHostList().contains(hostId))).forEachOrdered((virus) -> {
                             virus.addHost(hostId);
                         });
                     }
@@ -100,7 +102,8 @@ public class VirusLogica {
 
         } catch (NumberFormatException | IndexOutOfBoundsException ex) {
             JOptionPane.showMessageDialog(null, "Onjuist bestandsformat./n"
-                    + "Zorg ervoor dat het bestand dezelfde structuur heeft als ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv.\n"
+                    + "Zorg ervoor dat het bestand dezelfde structuur heeft"
+                    + "als ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv.\n"
                     + ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
@@ -163,6 +166,8 @@ public class VirusLogica {
                 VirusGUI.hostComboBox2.setModel(new DefaultComboBoxModel(hostKeys));
                 VirusGUI.hostComboBox1.setEnabled(true);
                 VirusGUI.hostComboBox2.setEnabled(true);
+                VirusGUI.hostComboBox1.setToolTipText((String) VirusGUI.hostComboBox1.getSelectedItem());
+                VirusGUI.hostComboBox2.setToolTipText((String) VirusGUI.hostComboBox2.getSelectedItem());
                 updateLists();
                 updateEditorPane(VirusGUI.virusEditorPane1, virusList1);
                 updateEditorPane(VirusGUI.virusEditorPane2, virusList2);
@@ -213,7 +218,9 @@ public class VirusLogica {
         HTMLEditorKit htmlKit = (HTMLEditorKit) editorPane.getEditorKit();
         virusList.forEach((Virus virus) -> {
             try {
-                htmlKit.insertHTML(htmlDoc, htmlDoc.getLength(), "<a href=\"http://www.genome.jp/virushostdb/" + virus.getId() + "\">" + virus.getId() + "</a>", 0, 0, null);
+                htmlKit.insertHTML(htmlDoc, htmlDoc.getLength(), 
+                        "<a href=\"http://www.genome.jp/virushostdb/"
+                                + virus.getId() + "\">" + virus.getId() + "</a>", 0, 0, null);
             } catch (BadLocationException | IOException ex) {
                 JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
             }

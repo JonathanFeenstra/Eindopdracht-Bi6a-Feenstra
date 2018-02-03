@@ -49,11 +49,71 @@ public class VirusGUI extends javax.swing.JFrame {
         classRadioButton = new javax.swing.JRadioButton();
         hostsRadioButton = new javax.swing.JRadioButton();
         virusScrollPane1 = new javax.swing.JScrollPane();
-        virusEditorPane1 = new javax.swing.JEditorPane();
+        virusEditorPane1 = new javax.swing.JEditorPane() {
+            @Override
+            public String getToolTipText(java.awt.event.MouseEvent evt) {
+                int pos = viewToModel(evt.getPoint());
+                if (pos >= 0) {
+                    javax.swing.text.html.HTMLDocument hdoc = (javax.swing.text.html.HTMLDocument) getDocument();
+                    javax.swing.text.Element e = hdoc.getCharacterElement(pos);
+                    try {
+                        for (Virus v: VirusLogica.virusList1) {
+                            if (v.getId() == Integer.parseInt(hdoc.getText(e.getStartOffset(), e.getEndOffset() - e.getStartOffset()))) {
+                                return v.getSoort();
+                            }
+                        }
+                    } catch (Exception ex) {
+                    }
+                }
+                return null;
+            }
+        };
+        javax.swing.ToolTipManager.sharedInstance().registerComponent(virusEditorPane1);
+        ;
         virusScrollPane2 = new javax.swing.JScrollPane();
-        virusEditorPane2 = new javax.swing.JEditorPane();
+        virusEditorPane2 = new javax.swing.JEditorPane() {
+            @Override
+            public String getToolTipText(java.awt.event.MouseEvent evt) {
+                int pos = viewToModel(evt.getPoint());
+                if (pos >= 0) {
+                    javax.swing.text.html.HTMLDocument hdoc = (javax.swing.text.html.HTMLDocument) getDocument();
+                    javax.swing.text.Element e = hdoc.getCharacterElement(pos);
+                    try {
+                        for (Virus v: VirusLogica.virusList2) {
+                            if (v.getId() == Integer.parseInt(hdoc.getText(e.getStartOffset(), e.getEndOffset() - e.getStartOffset()))) {
+                                return v.getSoort();
+                            }
+                        }
+                    } catch (Exception ex) {
+                    }
+                }
+                return null;
+            }
+        };
+        javax.swing.ToolTipManager.sharedInstance().registerComponent(virusEditorPane2);
+        ;
         overlapScrollPane = new javax.swing.JScrollPane();
-        overlapEditorPane = new javax.swing.JEditorPane();
+        overlapEditorPane = new javax.swing.JEditorPane() {
+            @Override
+            public String getToolTipText(java.awt.event.MouseEvent evt) {
+                int pos = viewToModel(evt.getPoint());
+                if (pos >= 0) {
+                    javax.swing.text.html.HTMLDocument hdoc = (javax.swing.text.html.HTMLDocument) getDocument();
+                    javax.swing.text.Element e = hdoc.getCharacterElement(pos);
+                    try {
+                        for (Virus v: VirusLogica.overlapList) {
+                            if (v.getId() == Integer.parseInt(hdoc.getText(e.getStartOffset(), e.getEndOffset() - e.getStartOffset()))) {
+                                return v.getSoort();
+                            }
+                        }
+                    } catch (Exception ex) {
+                    }
+                }
+                return null;
+            }
+        };
+        javax.swing.ToolTipManager.sharedInstance().registerComponent(overlapEditorPane);
+        ;
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -405,7 +465,7 @@ public class VirusGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_idRadioButtonActionPerformed
 
     private void hostComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_hostComboBox2ItemStateChanged
-        hostComboBox1.setToolTipText((String) hostComboBox1.getSelectedItem());
+        hostComboBox2.setToolTipText((String) hostComboBox2.getSelectedItem());
         VirusLogica.updateLists();
         VirusLogica.updateEditorPane(virusEditorPane2, VirusLogica.virusList2);
         VirusLogica.updateEditorPane(overlapEditorPane, VirusLogica.overlapList);
