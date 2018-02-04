@@ -1,12 +1,9 @@
 /*
- * Virus App
+ * Virus App - © Jonathan Feenstra 2018.
  * Datum laatste versie: 7 februari 2018
  * Functionaliteit: Het weergeven, sorteren en filteren van viruslijsten uit 
  * tsv-bestanden van Virus-Host DB en het bepalen van de overlap tussen deze 
  * lijsten. Specifiek ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv
- * Bekende bugs: Bij het selecteren van 1 (root) als host en "Other" als class,
- * worden vaak alle virussen van 1 (root) getoond terwijl sommige van een andere 
- * class zijn.
  */
 package virusapplicatie;
 
@@ -71,7 +68,9 @@ public class VirusLogica {
      * Leest bestand in en maakt HashMaps van (host ID + naam) naar HashMaps van
      * classificatie naar HashSet van Virus objecten en van virus ID naar Virus
      * object.
-     *
+     * Alex Janse heeft mij op het idee gebracht om voor het filteren op 
+     * classificatie ook een HashMap te gebruiken.
+     * 
      * @param reader van de te lezen tsv-file
      */
     public static void saveHostToVirusData(Reader reader) {
@@ -92,19 +91,23 @@ public class VirusLogica {
                     HashMap<String, HashSet<Virus>> classToVirusMap = new HashMap<>();
                     Virus currVirus = new Virus(virusId, virusNaam, hostId, virusClass);
                     virusPerClass.add(currVirus);
-                    classToVirusMap.put("Any", virusPerClass);
-                    classToVirusMap.put(virusClass, virusPerClass);
+                    classToVirusMap.put(CLASSIFICATIES[0], virusPerClass);                    
                     if (!virusIdToVirusMap.containsKey(virusId)) {
                         virusIdToVirusMap.put(virusId, currVirus);
-                    } else if (!virusIdToVirusMap.get(virusId).getHostList().contains(hostId)) {
+                    } else {
                         virusIdToVirusMap.get(virusId).addHost(hostId);
+                    }
+                    if (!classToVirusMap.containsKey(virusClass)) {
+                        classToVirusMap.put(virusClass, (HashSet) virusPerClass.clone());
+                    } else {
+                        classToVirusMap.get(virusClass).add(virusIdToVirusMap.get(virusId));
                     }
                     String key = row[7] + " (" + row[8] + ")";
                     if (!hostToVirusMap.containsKey(key)) {
                         hostToVirusMap.put(key, (HashMap) classToVirusMap.clone());
                     } else if (hostToVirusMap.get(key).containsKey(virusClass)) {
                         hostToVirusMap.get(key).get(virusClass).add(virusIdToVirusMap.get(virusId));
-                        hostToVirusMap.get(key).get("Any").add(virusIdToVirusMap.get(virusId));
+                        hostToVirusMap.get(key).get(CLASSIFICATIES[0]).add(virusIdToVirusMap.get(virusId));
                     } else {
                         hostToVirusMap.get(key).put(virusClass, (HashSet) virusPerClass.clone());
                     }

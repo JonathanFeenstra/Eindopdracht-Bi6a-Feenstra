@@ -1,16 +1,13 @@
 /*
- * Virus App
+ * Virus App - © Jonathan Feenstra 2018.
  * Datum laatste versie: 7 februari 2018
  * Functionaliteit: Het weergeven, sorteren en filteren van viruslijsten uit 
  * tsv-bestanden van Virus-Host DB en het bepalen van de overlap tussen deze 
  * lijsten. Specifiek ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv
- * Bekende bugs: Bij het selecteren van 1 (root) als host en "Other" als class,
- * worden vaak alle virussen van 1 (root) getoond terwijl sommige van een andere 
- * class zijn.
  */
 package virusapplicatie;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Class voor het opslaan van informatie per virus.
@@ -23,7 +20,7 @@ public class Virus implements Comparable {
 
     private int id;
     private String soort, classificatie;
-    private ArrayList<Integer> hostList;
+    private HashSet<Integer> hostSet;
 
     /**
      * Integer die de te gebruiken sorteringsmethode aangeeft, 0 = id van laag
@@ -42,8 +39,8 @@ public class Virus implements Comparable {
     public Virus(int id, String soort, int hostId, String classificatie) {
         this.id = id;
         this.soort = soort;
-        this.hostList = new ArrayList<>();
-        this.hostList.add(hostId);
+        this.hostSet = new HashSet<>();
+        this.hostSet.add(hostId);
         this.classificatie = classificatie;
     }
 
@@ -102,21 +99,21 @@ public class Virus implements Comparable {
     }
 
     /**
-     * Hostlist getter
+     * Hostset getter
      *
      * @return de hostlijst
      */
-    public ArrayList<Integer> getHostList() {
-        return hostList;
+    public HashSet<Integer> getHostSet() {
+        return hostSet;
     }
 
     /**
-     * Hostlist setter
+     * Hostset setter
      *
-     * @param hostList de hostlijst
+     * @param hostSet de hostlijst
      */
-    public void setHostList(ArrayList<Integer> hostList) {
-        this.hostList = hostList;
+    public void setHostSet(HashSet<Integer> hostSet) {
+        this.hostSet = hostSet;
     }
 
     /**
@@ -125,7 +122,7 @@ public class Virus implements Comparable {
      * @param hostId de host ID
      */
     public void addHost(int hostId) {
-        this.hostList.add(hostId);
+        this.hostSet.add(hostId);
     }
 
     @Override
@@ -137,7 +134,7 @@ public class Virus implements Comparable {
             case 1:
                 return this.classificatie.compareTo(v.classificatie);
             case 2:
-                return this.hostList.size() - v.hostList.size();
+                return this.hostSet.size() - v.hostSet.size();
             default:
                 return 0;
         }
