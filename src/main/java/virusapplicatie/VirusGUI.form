@@ -316,7 +316,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="searchTextField">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Search"/>
+            <Property name="text" type="java.lang.String" value="ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[500, 20]"/>
             </Property>

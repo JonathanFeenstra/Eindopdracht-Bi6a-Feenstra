@@ -4,6 +4,9 @@
  * Functionaliteit: Het weergeven, sorteren en filteren van viruslijsten uit 
  * tsv-bestanden van Virus-Host DB en het bepalen van de overlap tussen deze 
  * lijsten. Specifiek ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv
+ * Bekende bugs: Bij het selecteren van 1 (root) als host en "Other" als class,
+ * worden vaak alle virussen van 1 (root) getoond terwijl sommige van een andere 
+ * class zijn.
  */
 package virusapplicatie;
 
@@ -140,7 +143,7 @@ public class VirusGUI extends javax.swing.JFrame {
         fileLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         fileLabel.setText("File of URL");
 
-        searchTextField.setText("Search");
+        searchTextField.setText("ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv");
         searchTextField.setMaximumSize(new java.awt.Dimension(500, 20));
         searchTextField.setMinimumSize(new java.awt.Dimension(500, 20));
         searchTextField.addFocusListener(new java.awt.event.FocusAdapter() {

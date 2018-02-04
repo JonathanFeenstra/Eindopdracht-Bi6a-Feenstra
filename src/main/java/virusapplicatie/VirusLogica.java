@@ -4,6 +4,9 @@
  * Functionaliteit: Het weergeven, sorteren en filteren van viruslijsten uit 
  * tsv-bestanden van Virus-Host DB en het bepalen van de overlap tussen deze 
  * lijsten. Specifiek ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv
+ * Bekende bugs: Bij het selecteren van 1 (root) als host en "Other" als class,
+ * worden vaak alle virussen van 1 (root) getoond terwijl sommige van een andere 
+ * class zijn.
  */
 package virusapplicatie;
 
@@ -74,7 +77,7 @@ public class VirusLogica {
     public static void saveHostToVirusData(Reader reader) {
         try {
             hostToVirusMap = new HashMap<>();
-            virusIdToVirusMap = new HashMap<>();
+            virusIdToVirusMap = new HashMap<>(); // Maakt het mogelijk om hostlists per Virus op te slaan zonder extra iteratie
             TsvParserSettings settings = new TsvParserSettings();
             settings.getFormat().setLineSeparator("\n");
             TsvParser parser = new TsvParser(settings);
@@ -88,7 +91,6 @@ public class VirusLogica {
                     HashSet<Virus> virusPerClass = new HashSet();
                     HashMap<String, HashSet<Virus>> classToVirusMap = new HashMap<>();
                     Virus currVirus = new Virus(virusId, virusNaam, hostId, virusClass);
-                    currVirus.addHost(hostId);
                     virusPerClass.add(currVirus);
                     classToVirusMap.put("Any", virusPerClass);
                     classToVirusMap.put(virusClass, virusPerClass);
@@ -101,8 +103,8 @@ public class VirusLogica {
                     if (!hostToVirusMap.containsKey(key)) {
                         hostToVirusMap.put(key, (HashMap) classToVirusMap.clone());
                     } else if (hostToVirusMap.get(key).containsKey(virusClass)) {
-                        hostToVirusMap.get(key).get(virusClass).add(currVirus);
-                        hostToVirusMap.get(key).get("Any").add(currVirus);
+                        hostToVirusMap.get(key).get(virusClass).add(virusIdToVirusMap.get(virusId));
+                        hostToVirusMap.get(key).get("Any").add(virusIdToVirusMap.get(virusId));
                     } else {
                         hostToVirusMap.get(key).put(virusClass, (HashSet) virusPerClass.clone());
                     }
@@ -142,7 +144,7 @@ public class VirusLogica {
         }
         if (virusLineage.contains("Retro")) {
             return CLASSIFICATIES[5];
-        } else if (virusLineage.contains("Satelite") || virusLineage.contains("virophage")) {
+        } else if (virusLineage.contains("Satellite") || virusLineage.contains("virophage")) {
             return CLASSIFICATIES[6];
         } else if (virusLineage.startsWith("Viroid")) {
             return CLASSIFICATIES[7];
@@ -219,8 +221,12 @@ public class VirusLogica {
                 Collections.sort(virusList1);
                 Collections.sort(virusList2);
                 Collections.sort(overlapList);
-                updateBorders();
+            } else {
+                virusList1 = new ArrayList<>();
+                virusList2 = new ArrayList<>();
+                overlapList = new ArrayList<>();
             }
+            updateBorders();
         }
     }
 
@@ -385,5 +391,4 @@ public class VirusLogica {
             }
         }
     }
-
 }
