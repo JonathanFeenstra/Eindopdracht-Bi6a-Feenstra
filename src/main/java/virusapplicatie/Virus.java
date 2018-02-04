@@ -4,9 +4,6 @@
  * Functionaliteit: Het weergeven, sorteren en filteren van viruslijsten uit 
  * tsv-bestanden van Virus-Host DB en het bepalen van de overlap tussen deze 
  * lijsten. Specifiek ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv
- * Bekende bugs: Bij het selecteren van 1 (root) als host en "Other" als class,
- * worden vaak alle virussen van 1 (root) getoond terwijl sommige van een andere 
- * class zijn.
  */
 package virusapplicatie;
 
