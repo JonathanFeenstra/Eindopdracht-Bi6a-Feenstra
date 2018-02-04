@@ -197,8 +197,7 @@ public class VirusLogica {
             JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -211,15 +210,17 @@ public class VirusLogica {
         if (hostToVirusMap != null) {
             HashSet<Virus> virusSet1 = hostToVirusMap.get(VirusGUI.hostComboBox1.getSelectedItem().toString()).get(VirusGUI.classComboBox.getSelectedItem().toString());
             HashSet<Virus> virusSet2 = hostToVirusMap.get(VirusGUI.hostComboBox2.getSelectedItem().toString()).get(VirusGUI.classComboBox.getSelectedItem().toString());
-            virusList1 = new ArrayList<>(virusSet1);
-            virusList2 = new ArrayList<>(virusSet2);
-            Set overlapSet = (HashSet) virusSet1.clone();
-            overlapSet.retainAll(virusList2);
-            overlapList = new ArrayList(overlapSet);
-            Collections.sort(virusList1);
-            Collections.sort(virusList2);
-            Collections.sort(overlapList);
-            updateBorders();
+            if (virusSet1 != null && virusSet2 != null) {
+                virusList1 = new ArrayList<>(virusSet1);
+                virusList2 = new ArrayList<>(virusSet2);
+                Set overlapSet = (HashSet) virusSet1.clone();
+                overlapSet.retainAll(virusList2);
+                overlapList = new ArrayList(overlapSet);
+                Collections.sort(virusList1);
+                Collections.sort(virusList2);
+                Collections.sort(overlapList);
+                updateBorders();
+            }
         }
     }
 
@@ -231,18 +232,20 @@ public class VirusLogica {
      * @param virusList de te weergeven viruslijst
      */
     public static void updateEditorPane(JEditorPane editorPane, List<Virus> virusList) {
-        editorPane.setText("");
-        HTMLDocument htmlDoc = (HTMLDocument) editorPane.getDocument();
-        HTMLEditorKit htmlKit = (HTMLEditorKit) editorPane.getEditorKit();
-        virusList.forEach((Virus virus) -> {
-            try {
-                htmlKit.insertHTML(htmlDoc, htmlDoc.getLength(),
-                        "<a href=\"http://www.genome.jp/virushostdb/"
-                        + virus.getId() + "\">" + virus.getId() + "</a>", 0, 0, null);
-            } catch (BadLocationException | IOException ex) {
-                JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
-            }
-        });
+        if (editorPane != null && virusList != null) {
+            editorPane.setText("");
+            HTMLDocument htmlDoc = (HTMLDocument) editorPane.getDocument();
+            HTMLEditorKit htmlKit = (HTMLEditorKit) editorPane.getEditorKit();
+            virusList.forEach((Virus virus) -> {
+                try {
+                    htmlKit.insertHTML(htmlDoc, htmlDoc.getLength(),
+                            "<a href=\"http://www.genome.jp/virushostdb/"
+                            + virus.getId() + "\">" + virus.getId() + "</a>", 0, 0, null);
+                } catch (BadLocationException | IOException ex) {
+                    JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+                }
+            });
+        }
     }
 
     /**
