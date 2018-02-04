@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 /**
  * Class voor het opslaan van informatie per virus.
- * 
+ *
  * @author Jonathan Feenstra
  * @since JDK 1.8
  * @version 1.0
@@ -97,10 +97,10 @@ public class Virus implements Comparable {
     public void setClassificatie(String classificatie) {
         this.classificatie = classificatie;
     }
-    
+
     /**
      * Hostlist getter
-     * 
+     *
      * @return de hostlijst
      */
     public ArrayList<Integer> getHostList() {
@@ -109,13 +109,13 @@ public class Virus implements Comparable {
 
     /**
      * Hostlist setter
-     * 
+     *
      * @param hostList de hostlijst
      */
     public void setHostList(ArrayList<Integer> hostList) {
         this.hostList = hostList;
     }
-    
+
     /**
      * Voegt host ID toe
      *
@@ -138,5 +138,20 @@ public class Virus implements Comparable {
             default:
                 return 0;
         }
+    }
+
+    // Deze overrides zorgen dat retainAll() alle virussen met dezelfde id's behoudt.
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Virus) {
+            Virus v = (Virus) obj;
+            return v.id == this.id;
+        }
+        return false;
     }
 }

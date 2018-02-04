@@ -56,12 +56,8 @@ public class VirusGUI extends javax.swing.JFrame {
                 if (pos >= 0) {
                     javax.swing.text.html.HTMLDocument hdoc = (javax.swing.text.html.HTMLDocument) getDocument();
                     javax.swing.text.Element e = hdoc.getCharacterElement(pos);
-                    try {
-                        for (Virus v: VirusLogica.virusList1) {
-                            if (v.getId() == Integer.parseInt(hdoc.getText(e.getStartOffset(), e.getEndOffset() - e.getStartOffset()))) {
-                                return v.getSoort();
-                            }
-                        }
+                    try {                
+                        return VirusLogica.virusIdToVirusMap.get(Integer.parseInt(hdoc.getText(e.getStartOffset(), e.getEndOffset() - e.getStartOffset()))).getSoort();
                     } catch (Exception ex) {
                     }
                 }
@@ -80,12 +76,8 @@ public class VirusGUI extends javax.swing.JFrame {
                 if (pos >= 0) {
                     javax.swing.text.html.HTMLDocument hdoc = (javax.swing.text.html.HTMLDocument) getDocument();
                     javax.swing.text.Element e = hdoc.getCharacterElement(pos);
-                    try {
-                        for (Virus v: VirusLogica.virusList2) {
-                            if (v.getId() == Integer.parseInt(hdoc.getText(e.getStartOffset(), e.getEndOffset() - e.getStartOffset()))) {
-                                return v.getSoort();
-                            }
-                        }
+                    try {                
+                        return VirusLogica.virusIdToVirusMap.get(Integer.parseInt(hdoc.getText(e.getStartOffset(), e.getEndOffset() - e.getStartOffset()))).getSoort();
                     } catch (Exception ex) {
                     }
                 }
@@ -95,6 +87,7 @@ public class VirusGUI extends javax.swing.JFrame {
         javax.swing.ToolTipManager.sharedInstance().registerComponent(virusEditorPane2);
         javax.swing.text.DefaultCaret virusCaret2 = (javax.swing.text.DefaultCaret) virusEditorPane2.getCaret();
         virusCaret2.setUpdatePolicy(javax.swing.text.DefaultCaret.NEVER_UPDATE);
+        ;
         overlapScrollPane = new javax.swing.JScrollPane();
         overlapEditorPane = new javax.swing.JEditorPane() {
             @Override
@@ -103,12 +96,8 @@ public class VirusGUI extends javax.swing.JFrame {
                 if (pos >= 0) {
                     javax.swing.text.html.HTMLDocument hdoc = (javax.swing.text.html.HTMLDocument) getDocument();
                     javax.swing.text.Element e = hdoc.getCharacterElement(pos);
-                    try {
-                        for (Virus v: VirusLogica.overlapList) {
-                            if (v.getId() == Integer.parseInt(hdoc.getText(e.getStartOffset(), e.getEndOffset() - e.getStartOffset()))) {
-                                return v.getSoort();
-                            }
-                        }
+                    try {                
+                        return VirusLogica.virusIdToVirusMap.get(Integer.parseInt(hdoc.getText(e.getStartOffset(), e.getEndOffset() - e.getStartOffset()))).getSoort();
                     } catch (Exception ex) {
                     }
                 }
@@ -118,6 +107,7 @@ public class VirusGUI extends javax.swing.JFrame {
         javax.swing.ToolTipManager.sharedInstance().registerComponent(overlapEditorPane);
         javax.swing.text.DefaultCaret overlapCaret = (javax.swing.text.DefaultCaret) overlapEditorPane.getCaret();
         overlapCaret.setUpdatePolicy(javax.swing.text.DefaultCaret.NEVER_UPDATE);
+        ;
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();

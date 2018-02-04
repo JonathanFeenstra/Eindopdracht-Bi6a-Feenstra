@@ -34,7 +34,8 @@ import javax.swing.text.html.HTMLEditorKit;
  */
 public class VirusLogica {
 
-    private static HashMap<String, HashSet<Virus>> hostToVirusMap;
+    private static HashMap<String, HashMap<String, HashSet<Virus>>> hostToVirusMap;
+    static HashMap<Integer, Virus> virusIdToVirusMap;
     static ArrayList<Virus> virusList1, virusList2, overlapList;
     static final String[] CLASSIFICATIES = {"Any", "dsRNA", "dsDNA", "ssRNA",
         "ssDNA", "Retrovirus", "Satelite virus and Virophage", "Viroid", "Other"};
@@ -64,14 +65,16 @@ public class VirusLogica {
     }
 
     /**
-     * Maakt HashMap van (host ID + naam) naar HashSet van Virus objecten.
+     * Leest bestand in en maakt HashMaps van (host ID + naam) naar HashMaps van
+     * classificatie naar HashSet van Virus objecten en van virus ID naar Virus
+     * object.
      *
      * @param reader van de te lezen tsv-file
      */
-    public static void createHostToVirusMap(Reader reader) {
+    public static void saveHostToVirusData(Reader reader) {
         try {
             hostToVirusMap = new HashMap<>();
-            HashSet<Virus> virusSet = new HashSet<>();
+            virusIdToVirusMap = new HashMap<>();
             TsvParserSettings settings = new TsvParserSettings();
             settings.getFormat().setLineSeparator("\n");
             TsvParser parser = new TsvParser(settings);
@@ -81,31 +84,41 @@ public class VirusLogica {
             while ((row = parser.parseNext()) != null) {
                 if (row[7] != null) { // Virussen zonder host ID worden niet opgeslagen
                     int virusId = Integer.parseInt(row[0]), hostId = Integer.parseInt(row[7]);
-                    Virus currVirus = new Virus(virusId, row[1], hostId, determineVirusClass(row[2]));
+                    String virusNaam = row[1], virusClass = determineVirusClass(row[2]);
+                    HashSet<Virus> virusPerClass = new HashSet();
+                    HashMap<String, HashSet<Virus>> classToVirusMap = new HashMap<>();
+                    Virus currVirus = new Virus(virusId, virusNaam, hostId, virusClass);
                     currVirus.addHost(hostId);
-                    virusSet.add(currVirus);
+                    virusPerClass.add(currVirus);
+                    classToVirusMap.put("Any", virusPerClass);
+                    classToVirusMap.put(virusClass, virusPerClass);
+                    if (!virusIdToVirusMap.containsKey(virusId)) {
+                        virusIdToVirusMap.put(virusId, currVirus);
+                    } else if (!virusIdToVirusMap.get(virusId).getHostList().contains(hostId)) {
+                        virusIdToVirusMap.get(virusId).addHost(hostId);
+                    }
                     String key = row[7] + " (" + row[8] + ")";
                     if (!hostToVirusMap.containsKey(key)) {
-                        hostToVirusMap.put(key, (HashSet) virusSet.clone());
+                        hostToVirusMap.put(key, (HashMap) classToVirusMap.clone());
+                    } else if (hostToVirusMap.get(key).containsKey(virusClass)) {
+                        hostToVirusMap.get(key).get(virusClass).add(currVirus);
+                        hostToVirusMap.get(key).get("Any").add(currVirus);
                     } else {
-                        hostToVirusMap.get(key).add(currVirus);
-                        hostToVirusMap.get(key).stream().filter((virus)
-                                -> (!virus.getHostList().contains(hostId))).forEachOrdered((virus) -> {
-                            virus.addHost(hostId);
-                        });
+                        hostToVirusMap.get(key).put(virusClass, (HashSet) virusPerClass.clone());
                     }
-                    virusSet.clear();
                 }
             }
             parser.stopParsing();
 
         } catch (NumberFormatException | IndexOutOfBoundsException ex) {
-            JOptionPane.showMessageDialog(null, "Onjuist bestandsformat./n"
-                    + "Zorg ervoor dat het bestand dezelfde structuur heeft"
+            JOptionPane.showMessageDialog(null, "Onjuist bestandsformat.\n"
+                    + "Zorg ervoor dat het bestand dezelfde structuur heeft "
                     + "als ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv.\n"
                     + ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+            hostToVirusMap = null;
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+            hostToVirusMap = null;
         } finally {
             try {
                 reader.close();
@@ -152,33 +165,40 @@ public class VirusLogica {
                 VirusGUI.searchTextField.setText(filePath);
             } else {
                 try {
-                    selectedFileReader = new InputStreamReader(new URL(VirusGUI.searchTextField.getText()).openStream());
+                    filePath = VirusGUI.searchTextField.getText();
+                    selectedFileReader = new InputStreamReader(new URL(filePath).openStream());
                 } catch (MalformedURLException ex) {
                     selectedFileReader = new FileReader(VirusGUI.searchTextField.getText());
                 }
             }
             if (selectedFileReader != null) {
-                createHostToVirusMap(selectedFileReader);
-                String[] hostKeys = hostToVirusMap.keySet().toArray(new String[hostToVirusMap.size()]);
-                Arrays.sort(hostKeys);
-                VirusGUI.hostComboBox1.setModel(new DefaultComboBoxModel(hostKeys));
-                VirusGUI.hostComboBox2.setModel(new DefaultComboBoxModel(hostKeys));
-                VirusGUI.hostComboBox1.setEnabled(true);
-                VirusGUI.hostComboBox2.setEnabled(true);
-                VirusGUI.hostComboBox1.setToolTipText((String) VirusGUI.hostComboBox1.getSelectedItem());
-                VirusGUI.hostComboBox2.setToolTipText((String) VirusGUI.hostComboBox2.getSelectedItem());
-                updateLists();
-                updateEditorPane(VirusGUI.virusEditorPane1, virusList1);
-                updateEditorPane(VirusGUI.virusEditorPane2, virusList2);
-                updateEditorPane(VirusGUI.overlapEditorPane, overlapList);
-                VirusGUI.saveMenuItem.setEnabled(true);
-                VirusGUI.copyMenu.setEnabled(true);
+                saveHostToVirusData(selectedFileReader);
+                if (hostToVirusMap != null) {
+                    String[] hostKeys = hostToVirusMap.keySet().toArray(new String[hostToVirusMap.size()]);
+                    Arrays.sort(hostKeys);
+                    VirusGUI.hostComboBox1.setModel(new DefaultComboBoxModel(hostKeys));
+                    VirusGUI.hostComboBox2.setModel(new DefaultComboBoxModel(hostKeys));
+                    VirusGUI.hostComboBox1.setEnabled(true);
+                    VirusGUI.hostComboBox2.setEnabled(true);
+                    VirusGUI.hostComboBox1.setToolTipText((String) VirusGUI.hostComboBox1.getSelectedItem());
+                    VirusGUI.hostComboBox2.setToolTipText((String) VirusGUI.hostComboBox2.getSelectedItem());
+                    updateLists();
+                    updateEditorPane(VirusGUI.virusEditorPane1, virusList1);
+                    updateEditorPane(VirusGUI.virusEditorPane2, virusList2);
+                    updateEditorPane(VirusGUI.overlapEditorPane, overlapList);
+                    VirusGUI.saveMenuItem.setEnabled(true);
+                    VirusGUI.copyMenu.setEnabled(true);
+                } else {
+                    filePath = "";
+                    VirusGUI.searchTextField.setText("Search");
+                }
             }
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -189,17 +209,16 @@ public class VirusLogica {
      */
     public static void updateLists() {
         if (hostToVirusMap != null) {
-            virusList1 = new ArrayList<>(hostToVirusMap.get(VirusGUI.hostComboBox1.getSelectedItem().toString()));
-            virusList2 = new ArrayList<>(hostToVirusMap.get(VirusGUI.hostComboBox2.getSelectedItem().toString()));
-            if (VirusGUI.classComboBox.getSelectedIndex() != 0) {
-                virusList1.removeIf(v -> !v.getClassificatie().equals((String) VirusGUI.classComboBox.getSelectedItem()));
-                virusList2.removeIf(v -> !v.getClassificatie().equals((String) VirusGUI.classComboBox.getSelectedItem()));
-            }
-            Collections.sort(virusList1);
-            Collections.sort(virusList2);
-            Set overlapSet = new HashSet(virusList1);
+            HashSet<Virus> virusSet1 = hostToVirusMap.get(VirusGUI.hostComboBox1.getSelectedItem().toString()).get(VirusGUI.classComboBox.getSelectedItem().toString());
+            HashSet<Virus> virusSet2 = hostToVirusMap.get(VirusGUI.hostComboBox2.getSelectedItem().toString()).get(VirusGUI.classComboBox.getSelectedItem().toString());
+            virusList1 = new ArrayList<>(virusSet1);
+            virusList2 = new ArrayList<>(virusSet2);
+            Set overlapSet = (HashSet) virusSet1.clone();
             overlapSet.retainAll(virusList2);
             overlapList = new ArrayList(overlapSet);
+            Collections.sort(virusList1);
+            Collections.sort(virusList2);
+            Collections.sort(overlapList);
             updateBorders();
         }
     }
@@ -342,17 +361,21 @@ public class VirusLogica {
                 fileLocation += ".txt";
             }
             try (PrintWriter out = new PrintWriter(fileLocation)) { // Zorgt dat flush() en close() vanzelf worden aangeroepen
-                out.print("[Viruslijst 1]\r\n"); // \r\n is platformonafhankelijk i.t.t. println
-                virusList1.forEach((v) -> { // Omdat de getText() van de JEditorPanes een vreemde encoding heeft
-                    out.print(v + "\r\n");
+                out.print("[Settings]\r\nsFile=" + filePath + "\r\nsClass="
+                        + VirusGUI.classComboBox.getSelectedItem().toString()
+                        + "\r\nsHost1=" + VirusGUI.hostComboBox1.getSelectedItem().toString()
+                        + "\r\nsHost2=" + VirusGUI.hostComboBox2.getSelectedItem().toString()
+                        + "\r\n\r\n[VirusList1]\r\n");
+                virusList1.forEach((v) -> {
+                    out.print(v.getId() + "\r\n");
                 });
-                out.print("\r\n[Viruslijst 2]\r\n");
+                out.print("\r\n[VirusList2]\r\n");
                 virusList2.forEach((v) -> {
-                    out.print(v + "\r\n");
+                    out.print(v.getId() + "\r\n");
                 });
-                out.print("\r\n[Overeenkomst]\r\n");
+                out.print("\r\n[Overlap]\r\n");
                 overlapList.forEach((v) -> {
-                    out.print(v + "\r\n");
+                    out.print(v.getId() + "\r\n");
                 });
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
