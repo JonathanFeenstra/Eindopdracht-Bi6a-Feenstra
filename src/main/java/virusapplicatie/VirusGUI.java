@@ -463,7 +463,7 @@ public class VirusGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
-        VirusLogica.loadFile(evt);
+        VirusFileHandler.loadFile(evt);
     }//GEN-LAST:event_openMenuItemActionPerformed
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
@@ -473,46 +473,46 @@ public class VirusGUI extends javax.swing.JFrame {
     private void hostsRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hostsRadioButtonActionPerformed
         Virus.sortMethod = 2;
         VirusLogica.sortLists();
-        VirusLogica.updateAllEditorPanes();
+        VirusUpdater.updateAllEditorPanes();
     }//GEN-LAST:event_hostsRadioButtonActionPerformed
 
     private void classRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_classRadioButtonActionPerformed
         Virus.sortMethod = 1;
         VirusLogica.sortLists();
-        VirusLogica.updateAllEditorPanes();
+        VirusUpdater.updateAllEditorPanes();
     }//GEN-LAST:event_classRadioButtonActionPerformed
 
     private void idRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idRadioButtonActionPerformed
         Virus.sortMethod = 0;
         VirusLogica.sortLists();
-        VirusLogica.updateAllEditorPanes();
+        VirusUpdater.updateAllEditorPanes();
     }//GEN-LAST:event_idRadioButtonActionPerformed
 
     private void hostComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_hostComboBox2ItemStateChanged
         hostComboBox2.setToolTipText((String) hostComboBox2.getSelectedItem());
-        VirusLogica.updateLists();
-        VirusLogica.updateEditorPane(virusEditorPane2, VirusLogica.virusList2);
-        VirusLogica.updateEditorPane(overlapEditorPane, VirusLogica.overlapList);
+        VirusUpdater.updateLists();
+        VirusUpdater.updateEditorPane(virusEditorPane2, VirusLogica.virusList2);
+        VirusUpdater.updateEditorPane(overlapEditorPane, VirusLogica.overlapList);
     }//GEN-LAST:event_hostComboBox2ItemStateChanged
 
     private void hostComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_hostComboBox1ItemStateChanged
         hostComboBox1.setToolTipText((String) hostComboBox1.getSelectedItem());
-        VirusLogica.updateLists();
-        VirusLogica.updateEditorPane(virusEditorPane1, VirusLogica.virusList1);
-        VirusLogica.updateEditorPane(overlapEditorPane, VirusLogica.overlapList);
+        VirusUpdater.updateLists();
+        VirusUpdater.updateEditorPane(virusEditorPane1, VirusLogica.virusList1);
+        VirusUpdater.updateEditorPane(overlapEditorPane, VirusLogica.overlapList);
     }//GEN-LAST:event_hostComboBox1ItemStateChanged
 
     private void classComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_classComboBoxItemStateChanged
-        VirusLogica.updateLists();
-        VirusLogica.updateAllEditorPanes();
+        VirusUpdater.updateLists();
+        VirusUpdater.updateAllEditorPanes();
     }//GEN-LAST:event_classComboBoxItemStateChanged
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        VirusLogica.loadFile(evt);
+        VirusFileHandler.loadFile(evt);
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
-        VirusLogica.loadFile(evt);
+        VirusFileHandler.loadFile(evt);
     }//GEN-LAST:event_searchTextFieldActionPerformed
 
     private void searchTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusLost
@@ -552,7 +552,7 @@ public class VirusGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_copyOverlapItemActionPerformed
 
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
-        VirusLogica.saveFile();
+        VirusFileHandler.saveFile();
     }//GEN-LAST:event_saveMenuItemActionPerformed
 
     private void dbMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dbMenuItemActionPerformed
