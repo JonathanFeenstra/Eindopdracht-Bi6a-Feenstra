@@ -67,10 +67,9 @@ public class VirusLogica {
     /**
      * Leest bestand in en maakt HashMaps van (host ID + naam) naar HashMaps van
      * classificatie naar HashSet van Virus objecten en van virus ID naar Virus
-     * object.
-     * Alex Janse heeft mij op het idee gebracht om voor het filteren op 
+     * object. Alex Janse heeft mij op het idee gebracht om voor het filteren op
      * classificatie ook een HashMap te gebruiken.
-     * 
+     *
      * @param reader van de te lezen tsv-file
      */
     public static void saveHostToVirusData(Reader reader) {
@@ -91,7 +90,7 @@ public class VirusLogica {
                     HashMap<String, HashSet<Virus>> classToVirusMap = new HashMap<>();
                     Virus currVirus = new Virus(virusId, virusNaam, hostId, virusClass);
                     virusPerClass.add(currVirus);
-                    classToVirusMap.put(CLASSIFICATIES[0], virusPerClass);                    
+                    classToVirusMap.put(CLASSIFICATIES[0], virusPerClass);
                     if (!virusIdToVirusMap.containsKey(virusId)) {
                         virusIdToVirusMap.put(virusId, currVirus);
                     } else {
@@ -188,9 +187,7 @@ public class VirusLogica {
                     VirusGUI.hostComboBox1.setToolTipText((String) VirusGUI.hostComboBox1.getSelectedItem());
                     VirusGUI.hostComboBox2.setToolTipText((String) VirusGUI.hostComboBox2.getSelectedItem());
                     updateLists();
-                    updateEditorPane(VirusGUI.virusEditorPane1, virusList1);
-                    updateEditorPane(VirusGUI.virusEditorPane2, virusList2);
-                    updateEditorPane(VirusGUI.overlapEditorPane, overlapList);
+                    updateAllEditorPanes();
                     VirusGUI.saveMenuItem.setEnabled(true);
                     VirusGUI.copyMenu.setEnabled(true);
                 } else {
@@ -199,37 +196,56 @@ public class VirusLogica {
                 }
             }
         } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Het geselecteerde bestand is niet gevonden.\n"
+                    + ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Er is een fout opgetreden bij het openen van het bestand.\n"
+                    + ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
         }
     }
 
     /**
-     * Sorteert en filtert viruslijsten en bepaald de overlap op basis van
-     * geselecteerde items in de VirusGUI.
+     * Werkt viruslijsten bij door te sorteren en te filteren en bepaald de
+     * overlap op basis van geselecteerde items in de VirusGUI.
      */
     public static void updateLists() {
         if (hostToVirusMap != null) {
             HashSet<Virus> virusSet1 = hostToVirusMap.get(VirusGUI.hostComboBox1.getSelectedItem().toString()).get(VirusGUI.classComboBox.getSelectedItem().toString());
             HashSet<Virus> virusSet2 = hostToVirusMap.get(VirusGUI.hostComboBox2.getSelectedItem().toString()).get(VirusGUI.classComboBox.getSelectedItem().toString());
-            if (virusSet1 != null && virusSet2 != null) {
+            if (virusSet1 != null) {
                 virusList1 = new ArrayList<>(virusSet1);
-                virusList2 = new ArrayList<>(virusSet2);
-                Set overlapSet = (HashSet) virusSet1.clone();
-                overlapSet.retainAll(virusList2);
-                overlapList = new ArrayList(overlapSet);
-                Collections.sort(virusList1);
-                Collections.sort(virusList2);
-                Collections.sort(overlapList);
             } else {
+                virusSet1 = new HashSet<>();
                 virusList1 = new ArrayList<>();
-                virusList2 = new ArrayList<>();
-                overlapList = new ArrayList<>();
             }
+            if (virusSet2 != null) {
+                virusList2 = new ArrayList<>(virusSet2);
+            } else {
+                virusSet2 = new HashSet<>();
+                virusList2 = new ArrayList<>();
+            }
+            Set overlapSet = (HashSet) virusSet1.clone();
+            overlapSet.retainAll(virusSet2);
+            overlapList = new ArrayList(overlapSet);
+            sortLists();
             updateBorders();
+        }
+    }
+
+    /**
+     * Sorteert de viruslijsten.
+     */
+    public static void sortLists() {
+        if (virusList1 != null) {
+            Collections.sort(virusList1);
+        }
+        if (virusList2 != null) {
+            Collections.sort(virusList2);
+        }
+        if (overlapList != null) {
+            Collections.sort(overlapList);
         }
     }
 
@@ -241,7 +257,7 @@ public class VirusLogica {
      * @param virusList de te weergeven viruslijst
      */
     public static void updateEditorPane(JEditorPane editorPane, List<Virus> virusList) {
-        if (editorPane != null && virusList != null) {
+        if (editorPane != null) {
             editorPane.setText("");
             HTMLDocument htmlDoc = (HTMLDocument) editorPane.getDocument();
             HTMLEditorKit htmlKit = (HTMLEditorKit) editorPane.getEditorKit();
@@ -291,10 +307,8 @@ public class VirusLogica {
      * Zorgt ervoor dat de viruslijsten en de weergave van JEditorPane's worden
      * bijgewerkt in de VirusGUI.
      */
-    public static void updateAll() {
-        updateLists();
+    public static void updateAllEditorPanes() {
         updateEditorPane(VirusGUI.virusEditorPane1, virusList1);
-        updateEditorPane(VirusGUI.overlapEditorPane, overlapList);
         updateEditorPane(VirusGUI.virusEditorPane2, virusList2);
         updateEditorPane(VirusGUI.overlapEditorPane, overlapList);
     }
@@ -302,7 +316,7 @@ public class VirusLogica {
     /**
      * Bezoekt website bij het klikken op een hyperlink.
      *
-     * @param evt de HyperlinkEvent
+     * @param evt de HyperlinkEvent van de aangeklikte hyperlink
      */
     public static void visitHyperlink(HyperlinkEvent evt) {
         if (evt.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
@@ -319,8 +333,8 @@ public class VirusLogica {
     }
 
     /**
-     * Overloading: open Javadoc of Virus-Host DB website afhankelijk van wat er
-     * is aangeklikt.
+     * Overloading: open Javadoc of Virus-Host DB website afhankelijk van welk
+     * menu item is aangeklikt.
      *
      * @param evt de ActionEvent van het aangeklikte JMenuItem
      */

@@ -472,17 +472,20 @@ public class VirusGUI extends javax.swing.JFrame {
 
     private void hostsRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hostsRadioButtonActionPerformed
         Virus.sortMethod = 2;
-        VirusLogica.updateAll();
+        VirusLogica.sortLists();
+        VirusLogica.updateAllEditorPanes();
     }//GEN-LAST:event_hostsRadioButtonActionPerformed
 
     private void classRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_classRadioButtonActionPerformed
         Virus.sortMethod = 1;
-        VirusLogica.updateAll();
+        VirusLogica.sortLists();
+        VirusLogica.updateAllEditorPanes();
     }//GEN-LAST:event_classRadioButtonActionPerformed
 
     private void idRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idRadioButtonActionPerformed
         Virus.sortMethod = 0;
-        VirusLogica.updateAll();
+        VirusLogica.sortLists();
+        VirusLogica.updateAllEditorPanes();
     }//GEN-LAST:event_idRadioButtonActionPerformed
 
     private void hostComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_hostComboBox2ItemStateChanged
@@ -500,7 +503,8 @@ public class VirusGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_hostComboBox1ItemStateChanged
 
     private void classComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_classComboBoxItemStateChanged
-        VirusLogica.updateAll();
+        VirusLogica.updateLists();
+        VirusLogica.updateAllEditorPanes();
     }//GEN-LAST:event_classComboBoxItemStateChanged
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
