@@ -7,9 +7,15 @@
  */
 
  /*
- * OPMERKING: Het commentaar bij de public variabelen is wellicht 
+ * OPMERKING 1: Het commentaar bij de public variabelen is wellicht 
  * vanzelfsprekend, maar bij het analyseren van de Javadoc moesten deze 
  * variabelen worden gedocumenteerd.
+ */
+
+/*
+ * OPMERKING 2: De saveHostAndVirusData() methode is vrij lang omdat er tijdens
+ * het inlezen van het bestand meerdere datastructuren gevuld worden voor een
+ * optimale Big O. Het opsplitsen in kortere methoden is lastig.
  */
 
 package virusapplicatie;
@@ -73,10 +79,11 @@ public class VirusLogica {
      * Leest bestand in en maakt HashMaps van (host ID + naam) naar HashMaps van
      * classificatie naar HashSet van Virus objecten en van virus ID naar Virus
      * object.
-     *
+     * Alex Janse heeft mij geholpen met de datastructuren in deze methode.
+     * 
      * @param reader van de te lezen tsv-file
      */
-    public static void saveHostToVirusData(Reader reader) {
+    public static void saveHostAndVirusData(Reader reader) {
         try {
             hostToClassToVirusMap = new HashMap<>();
             virusIdToVirusMap = new HashMap<>();

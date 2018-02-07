@@ -94,7 +94,7 @@ public class VirusFileHandler {
 
     /**
      * Procedure die steeds moet worden ondergaan als een bestand wordt geopend.
-     * Thijs Weenink heeft mij geholpen met het inladen van URL's
+     * Thijs Weenink heeft mij geholpen met het inladen van URL's.
      *
      * @param evt de ActionEvent van de bron
      *
@@ -114,7 +114,7 @@ public class VirusFileHandler {
                 }
             }
             if (selectedFileReader != null) {
-                VirusLogica.saveHostToVirusData(selectedFileReader);
+                VirusLogica.saveHostAndVirusData(selectedFileReader);
                 if (VirusLogica.hostToClassToVirusMap != null) {
                     String[] hostKeys = VirusLogica.hostToClassToVirusMap.keySet().toArray(new String[VirusLogica.hostToClassToVirusMap.size()]);
                     Arrays.sort(hostKeys);
