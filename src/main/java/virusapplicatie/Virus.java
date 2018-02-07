@@ -23,10 +23,15 @@ public class Virus implements Comparable {
     private HashSet<Integer> hostSet;
 
     /**
-     * Integer die de te gebruiken sorteringsmethode aangeeft, 0 = id van laag
-     * naar hoog, 1 = classificatie alfabetisch, 2 = aantal hosts
+     * Integer die de te gebruiken sorteringsmethode aangeeft, 0 = id, 1 =
+     * classificatie alfabetisch, 2 = aantal hosts.
      */
     public static int sortMethod = 0;
+    /**
+     * Boolean die aangeeft of van hoog naar laag (true) of van laag naar hoog
+     * (false) moet worden gesorteerd.
+     */
+    public static boolean sortOrder = true;
 
     /**
      * Constructor
@@ -128,15 +133,28 @@ public class Virus implements Comparable {
     @Override
     public int compareTo(Object o) {
         Virus v = (Virus) o;
-        switch (sortMethod) {
-            case 0:
-                return this.id - v.id;
-            case 1:
-                return this.classificatie.compareTo(v.classificatie);
-            case 2:
-                return this.hostSet.size() - v.hostSet.size();
-            default:
-                return 0;
+        if (!sortOrder) {
+            switch (sortMethod) {
+                case 0:
+                    return this.id - v.id;
+                case 1:
+                    return this.classificatie.compareTo(v.classificatie);
+                case 2:
+                    return this.hostSet.size() - v.hostSet.size();
+                default:
+                    return 0;
+            }
+        } else {
+            switch (sortMethod) {
+                case 0:
+                    return v.id - this.id;
+                case 1:
+                    return v.classificatie.compareTo(this.classificatie);
+                case 2:
+                    return v.hostSet.size() - this.hostSet.size();
+                default:
+                    return 0;
+            }
         }
     }
 

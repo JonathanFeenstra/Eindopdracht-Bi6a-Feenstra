@@ -47,7 +47,7 @@ public class VirusLogica {
     public static void saveHostToVirusData(Reader reader) {
         try {
             hostToVirusMap = new HashMap<>();
-            virusIdToVirusMap = new HashMap<>(); // Maakt het mogelijk om hostlists per Virus op te slaan zonder extra iteratie
+            virusIdToVirusMap = new HashMap<>();
             TsvParserSettings settings = new TsvParserSettings();
             settings.getFormat().setLineSeparator("\n");
             TsvParser parser = new TsvParser(settings);
@@ -57,35 +57,31 @@ public class VirusLogica {
             while ((row = parser.parseNext()) != null) {
                 if (row[7] != null) { // Virussen zonder host ID worden niet opgeslagen
                     int virusId = Integer.parseInt(row[0]), hostId = Integer.parseInt(row[7]);
-                    String virusNaam = row[1], virusClass = determineVirusClass(row[2]);
+                    String virusSoort = row[1], virusClass = determineVirusClass(row[2]);
+                    Virus currentVirus = new Virus(virusId, virusSoort, hostId, virusClass);
                     HashSet<Virus> virusPerClass = new HashSet();
                     HashMap<String, HashSet<Virus>> classToVirusMap = new HashMap<>();
-                    Virus currVirus = new Virus(virusId, virusNaam, hostId, virusClass);
-                    virusPerClass.add(currVirus);
-                    classToVirusMap.put(CLASSIFICATIES[0], virusPerClass);
                     if (!virusIdToVirusMap.containsKey(virusId)) {
-                        virusIdToVirusMap.put(virusId, currVirus);
+                        virusIdToVirusMap.put(virusId, currentVirus);
                     } else {
                         virusIdToVirusMap.get(virusId).addHost(hostId);
                     }
-                    if (!classToVirusMap.containsKey(virusClass)) {
-                        classToVirusMap.put(virusClass, (HashSet) virusPerClass.clone());
-                    } else {
-                        classToVirusMap.get(virusClass).add(virusIdToVirusMap.get(virusId));
-                    }
+                    currentVirus = virusIdToVirusMap.get(virusId);
+                    virusPerClass.add(currentVirus);
+                    classToVirusMap.put(CLASSIFICATIES[0], (HashSet) virusPerClass.clone());
+                    classToVirusMap.put(virusClass, (HashSet) virusPerClass.clone());
                     String key = row[7] + " (" + row[8] + ")";
                     if (!hostToVirusMap.containsKey(key)) {
                         hostToVirusMap.put(key, (HashMap) classToVirusMap.clone());
                     } else if (hostToVirusMap.get(key).containsKey(virusClass)) {
                         hostToVirusMap.get(key).get(virusClass).add(virusIdToVirusMap.get(virusId));
-                        hostToVirusMap.get(key).get(CLASSIFICATIES[0]).add(virusIdToVirusMap.get(virusId));
                     } else {
                         hostToVirusMap.get(key).put(virusClass, (HashSet) virusPerClass.clone());
                     }
+                    hostToVirusMap.get(key).get(CLASSIFICATIES[0]).add(currentVirus);
                 }
             }
             parser.stopParsing();
-
         } catch (NumberFormatException | IndexOutOfBoundsException ex) {
             JOptionPane.showMessageDialog(null, "Onjuist bestandsformat.\n"
                     + "Zorg ervoor dat het bestand dezelfde structuur heeft "

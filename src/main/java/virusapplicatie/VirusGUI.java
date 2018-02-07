@@ -48,6 +48,7 @@ public class VirusGUI extends javax.swing.JFrame {
         idRadioButton = new javax.swing.JRadioButton();
         classRadioButton = new javax.swing.JRadioButton();
         hostsRadioButton = new javax.swing.JRadioButton();
+        orderComboBox = new javax.swing.JComboBox<>();
         virusScrollPane1 = new javax.swing.JScrollPane();
         virusEditorPane1 = new javax.swing.JEditorPane() {
             @Override
@@ -233,15 +234,23 @@ public class VirusGUI extends javax.swing.JFrame {
             }
         });
 
+        orderComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hoog - laag", "Laag - hoog" }));
+        orderComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                orderComboBoxItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout sortPanelLayout = new javax.swing.GroupLayout(sortPanel);
         sortPanel.setLayout(sortPanelLayout);
         sortPanelLayout.setHorizontalGroup(
             sortPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sortPanelLayout.createSequentialGroup()
-                .addContainerGap(10, Short.MAX_VALUE)
-                .addGroup(sortPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(classRadioButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(sortPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(orderComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(hostsRadioButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(classRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(idRadioButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -251,8 +260,10 @@ public class VirusGUI extends javax.swing.JFrame {
                 .addComponent(idRadioButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(classRadioButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(11, 11, 11)
                 .addComponent(hostsRadioButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(orderComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -358,7 +369,7 @@ public class VirusGUI extends javax.swing.JFrame {
                     .addComponent(virusScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(virusScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(overlapScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
+                .addComponent(overlapScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -563,6 +574,16 @@ public class VirusGUI extends javax.swing.JFrame {
         VirusLogica.visitHyperlink(evt);
     }//GEN-LAST:event_jdocMenuItemActionPerformed
 
+    private void orderComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_orderComboBoxItemStateChanged
+        if (orderComboBox.getSelectedIndex() == 0) {
+            Virus.sortOrder = true;
+        } else {
+            Virus.sortOrder = false;
+        }
+        VirusLogica.sortLists();
+        VirusUpdater.updateAllEditorPanes();
+    }//GEN-LAST:event_orderComboBoxItemStateChanged
+
     /**
      * Maakt de GUI zichtbaar.
      *
@@ -624,6 +645,7 @@ public class VirusGUI extends javax.swing.JFrame {
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     static javax.swing.JMenuItem openMenuItem;
+    private javax.swing.JComboBox<String> orderComboBox;
     static javax.swing.JEditorPane overlapEditorPane;
     static javax.swing.JScrollPane overlapScrollPane;
     static javax.swing.JMenuItem saveMenuItem;
