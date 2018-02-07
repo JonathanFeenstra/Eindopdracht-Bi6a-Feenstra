@@ -5,6 +5,13 @@
  * tsv-bestanden van Virus-Host DB en het bepalen van de overlap tussen deze 
  * lijsten. Specifiek ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv
  */
+
+ /*
+ * OPMERKING: Het commentaar bij de public variabelen is wellicht 
+ * vanzelfsprekend, maar bij het analyseren van de Javadoc moesten deze 
+ * variabelen worden gedocumenteerd.
+ */
+
 package virusapplicatie;
 
 import com.univocity.parsers.tsv.TsvParser;
@@ -30,10 +37,35 @@ import javax.swing.text.BadLocationException;
  */
 public class VirusLogica {
 
-    static HashMap<String, HashMap<String, HashSet<Virus>>> hostToVirusMap;
-    static HashMap<Integer, Virus> virusIdToVirusMap;
-    static ArrayList<Virus> virusList1, virusList2, overlapList;
-    static final String[] CLASSIFICATIES = {"Any", "dsRNA", "dsDNA", "ssRNA",
+    /**
+     * De HashMap met (host IDs + namen) als keys en HashMaps van
+     * virusclassificaties naar Virus HashSets als values.
+     */
+    public static HashMap<String, HashMap<String, HashSet<Virus>>> hostToClassToVirusMap;
+
+    /**
+     * De HashMap met virus ID's als keys en Virus objecten als values.
+     */
+    public static HashMap<Integer, Virus> virusIdToVirusMap;
+
+    /**
+     * De eerste lijst van Virussen voor de geselecteerde host en classificatie.
+     */
+    public static ArrayList<Virus> virusList1,
+            /**
+             * De tweede lijst van Virussen voor de geselecteerde host en
+             * classificatie.
+             */
+            virusList2,
+            /**
+             * De overlap tussen virusList1 en virusList2.
+             */
+            overlapList;
+
+    /**
+     * De virusclassificaties volgens Virus-Host DB.
+     */
+    public static final String[] CLASSIFICATIES = {"Any", "dsRNA", "dsDNA", "ssRNA",
         "ssDNA", "Retrovirus", "Satelite virus and Virophage", "Viroid", "Other"};
     private static final String LINK_UNSUPPORTED_MSG = "Het openen van links wordt op uw computer niet ondersteund.";
 
@@ -46,7 +78,7 @@ public class VirusLogica {
      */
     public static void saveHostToVirusData(Reader reader) {
         try {
-            hostToVirusMap = new HashMap<>();
+            hostToClassToVirusMap = new HashMap<>();
             virusIdToVirusMap = new HashMap<>();
             TsvParserSettings settings = new TsvParserSettings();
             settings.getFormat().setLineSeparator("\n");
@@ -71,14 +103,14 @@ public class VirusLogica {
                     classToVirusMap.put(CLASSIFICATIES[0], (HashSet) virusPerClass.clone());
                     classToVirusMap.put(virusClass, (HashSet) virusPerClass.clone());
                     String key = row[7] + " (" + row[8] + ")";
-                    if (!hostToVirusMap.containsKey(key)) {
-                        hostToVirusMap.put(key, (HashMap) classToVirusMap.clone());
-                    } else if (hostToVirusMap.get(key).containsKey(virusClass)) {
-                        hostToVirusMap.get(key).get(virusClass).add(virusIdToVirusMap.get(virusId));
+                    if (!hostToClassToVirusMap.containsKey(key)) {
+                        hostToClassToVirusMap.put(key, (HashMap) classToVirusMap.clone());
+                    } else if (hostToClassToVirusMap.get(key).containsKey(virusClass)) {
+                        hostToClassToVirusMap.get(key).get(virusClass).add(virusIdToVirusMap.get(virusId));
                     } else {
-                        hostToVirusMap.get(key).put(virusClass, (HashSet) virusPerClass.clone());
+                        hostToClassToVirusMap.get(key).put(virusClass, (HashSet) virusPerClass.clone());
                     }
-                    hostToVirusMap.get(key).get(CLASSIFICATIES[0]).add(currentVirus);
+                    hostToClassToVirusMap.get(key).get(CLASSIFICATIES[0]).add(currentVirus);
                 }
             }
             parser.stopParsing();
@@ -87,10 +119,10 @@ public class VirusLogica {
                     + "Zorg ervoor dat het bestand dezelfde structuur heeft "
                     + "als ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv.\n"
                     + ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
-            hostToVirusMap = null;
+            hostToClassToVirusMap = null;
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
-            hostToVirusMap = null;
+            hostToClassToVirusMap = null;
         } finally {
             try {
                 reader.close();

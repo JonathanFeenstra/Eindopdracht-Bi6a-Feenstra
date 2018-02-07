@@ -35,9 +35,9 @@ public class VirusUpdater {
      * overlap op basis van geselecteerde items in de VirusGUI.
      */
     public static void updateLists() {
-        if (VirusLogica.hostToVirusMap != null) {
-            HashSet<Virus> virusSet1 = VirusLogica.hostToVirusMap.get(VirusGUI.hostComboBox1.getSelectedItem().toString()).get(VirusGUI.classComboBox.getSelectedItem().toString());
-            HashSet<Virus> virusSet2 = VirusLogica.hostToVirusMap.get(VirusGUI.hostComboBox2.getSelectedItem().toString()).get(VirusGUI.classComboBox.getSelectedItem().toString());
+        if (VirusLogica.hostToClassToVirusMap != null) {
+            HashSet<Virus> virusSet1 = VirusLogica.hostToClassToVirusMap.get(VirusGUI.hostComboBox1.getSelectedItem().toString()).get(VirusGUI.classComboBox.getSelectedItem().toString());
+            HashSet<Virus> virusSet2 = VirusLogica.hostToClassToVirusMap.get(VirusGUI.hostComboBox2.getSelectedItem().toString()).get(VirusGUI.classComboBox.getSelectedItem().toString());
             if (virusSet1 != null) {
                 VirusLogica.virusList1 = new ArrayList<>(virusSet1);
             } else {

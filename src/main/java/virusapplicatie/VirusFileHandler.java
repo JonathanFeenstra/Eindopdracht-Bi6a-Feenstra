@@ -5,7 +5,6 @@
  * tsv-bestanden van Virus-Host DB en het bepalen van de overlap tussen deze 
  * lijsten. Specifiek ftp://ftp.genome.jp/pub/db/virushostdb/virushostdb.tsv
  */
-
 package virusapplicatie;
 
 import java.awt.event.ActionEvent;
@@ -25,7 +24,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Bevat methoden voor het openen, inladen en opslaan van bestanden.
- * 
+ *
  * @author Jonathan Feenstra
  * @since JDK 1.8
  * @version 1.0
@@ -47,8 +46,11 @@ public class VirusFileHandler {
                 fileLocation += ".txt";
             }
             try (final PrintWriter out = new PrintWriter(fileLocation)) {
-                // Zorgt dat flush() en close() vanzelf worden aangeroepen
-                out.print("[Settings]\r\nsFile=" + filePath + "\r\nsClass=" + VirusGUI.classComboBox.getSelectedItem().toString() + "\r\nsHost1=" + VirusGUI.hostComboBox1.getSelectedItem().toString() + "\r\nsHost2=" + VirusGUI.hostComboBox2.getSelectedItem().toString() + "\r\n\r\n[VirusList1]\r\n");
+                out.print("[Settings]\r\nsFile=" + filePath + "\r\nsClass="
+                        + VirusGUI.classComboBox.getSelectedItem().toString()
+                        + "\r\nsHost1=" + VirusGUI.hostComboBox1.getSelectedItem().toString()
+                        + "\r\nsHost2=" + VirusGUI.hostComboBox2.getSelectedItem().toString()
+                        + "\r\n\r\n[VirusList1]\r\n");
                 VirusLogica.virusList1.forEach((Virus v) -> {
                     out.print(v.getId() + "\r\n");
                 });
@@ -61,7 +63,9 @@ public class VirusFileHandler {
                     out.print(v.getId() + "\r\n");
                 });
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Er is een onbekende fout opgetreden.\n"
+                        + "Neem contact op met Jonathan Feenstra.\n"
+                        + ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -105,14 +109,14 @@ public class VirusFileHandler {
                 try {
                     filePath = VirusGUI.searchTextField.getText();
                     selectedFileReader = new InputStreamReader(new URL(filePath).openStream());
-                } catch (MalformedURLException ex) {
+                } catch (MalformedURLException ex) { // Als invoer geen URL is wordt het als filepath geïnterpreteerd.
                     selectedFileReader = new FileReader(VirusGUI.searchTextField.getText());
                 }
             }
             if (selectedFileReader != null) {
                 VirusLogica.saveHostToVirusData(selectedFileReader);
-                if (VirusLogica.hostToVirusMap != null) {
-                    String[] hostKeys = VirusLogica.hostToVirusMap.keySet().toArray(new String[VirusLogica.hostToVirusMap.size()]);
+                if (VirusLogica.hostToClassToVirusMap != null) {
+                    String[] hostKeys = VirusLogica.hostToClassToVirusMap.keySet().toArray(new String[VirusLogica.hostToClassToVirusMap.size()]);
                     Arrays.sort(hostKeys);
                     VirusGUI.hostComboBox1.setModel(new DefaultComboBoxModel(hostKeys));
                     VirusGUI.hostComboBox2.setModel(new DefaultComboBoxModel(hostKeys));
@@ -130,9 +134,11 @@ public class VirusFileHandler {
                 }
             }
         } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, "Het geselecteerde bestand is niet gevonden.\n" + ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Het geselecteerde bestand is niet gevonden.\n"
+                    + ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Er is een fout opgetreden bij het openen van het bestand.\n" + ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Er is een fout opgetreden bij het openen van het bestand.\n"
+                    + ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString(), ex.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
         }
